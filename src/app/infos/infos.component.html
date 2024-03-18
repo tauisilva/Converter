@@ -22,7 +22,12 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
       <td *ngFor="let col of columns">
-        {{ rowData[col.field] }}
+        <ng-container *ngIf="col.field !== 'charCode'; else charCodeTemplate">
+          {{ rowData[col.field] }}
+        </ng-container>
+        <ng-template #charCodeTemplate>
+          <span [innerHTML]="rowData[col.field]"></span>
+        </ng-template>
       </td>
     </tr>
   </ng-template>
@@ -31,13 +36,11 @@
   <section class="w-full dial">
     <p-scrollPanel [style]="{ width: '100%', height: '100%' }">
       <ol>
-        @for (item of caracInfos; track $index) {
-        <li class="list-disc">
+        <li class="list-disc" *ngFor="let item of caracInfos">
           <span class="font-bold">{{item.nome}} - </span>
           <span class="font-semibold">{{item.fullNome}} : </span>
           <span class="text-secundary text-sm">{{item.descricao}}</span>
         </li>
-        }
       </ol>
     </p-scrollPanel>
   </section>

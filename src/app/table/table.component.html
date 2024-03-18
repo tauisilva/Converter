@@ -4,7 +4,7 @@
       <table class="w-full">
         <caption>Conversão completa</caption>
         <thead>
-          <tr>
+          <tr class="text-center">
             <th>Tipo</th>
             <th>Valor</th>
           </tr>
@@ -12,7 +12,7 @@
         <tbody>
           <tr *ngFor="let type of completeConversion | keyvalue">
             <td class="font-semibold px-2">{{ type.key }}</td>
-            <td>{{ type.value.join(' | ') }}</td>
+            <td>{{ type.value.join(', ') }}</td>
           </tr>
         </tbody>
       </table>

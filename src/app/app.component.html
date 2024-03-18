@@ -19,18 +19,24 @@
         icon="pi pi-check" size="small">
         <span class="px-1 font-medium"><i class="bi bi-caret-right-fill"></i></span>
       </p-button>
-      <p-button *ngIf="value !== null" [disabled]="value == null" (onClick)="init = false; value = null"
-        severity="danger" icon="pi pi-check" size="small">
-        <span class="px-1"><i class="bi bi-trash"></i></span>
+      <p-button *ngIf="value !== null" [disabled]="value == null" (onClick)="reload()" severity="info"
+        icon="pi pi-check" size="small">
+        <span class="px-1"><i class="bi bi-arrow-clockwise"></i></span>
       </p-button>
     </section>
   </section>
   @if (init) {
   <section class="w-full h-full flex flex-column justify-content-between">
-    <section class="w-full h-full text-right">
-      <span (click)="init = false; value = null" class="font-bold cursor-pointer text-3xl">
-        <i class="bi bi-x"></i>
-      </span>
+    <section class="w-full h-full">
+      <section class="flex gap-2 justify-content-end">
+        <a class="font-bold cursor-pointer text-2xl" href="https://www.asciitable.com/" target="_blank"
+          rel="noopener noreferrer">
+          <i class="bi bi-link-45deg"></i>
+        </a>
+        <span (click)="init = false; value = null" class="font-bold cursor-pointer text-2xl">
+          <i class="bi bi-x-circle"></i>
+        </span>
+      </section>
       <app-table [value]="value"></app-table>
     </section>
     <section class="w-full">

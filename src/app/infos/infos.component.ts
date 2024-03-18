@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -14,14 +14,10 @@ import { caracteresDeControle } from './caracteres';
   selector: 'app-infos',
   standalone: true,
   imports: [
-    InputTextModule,
-    TabViewModule,
-    NgFor,
-    TableModule,
-    MultiSelectModule,
-    FormsModule,
-    ButtonModule,
-    ScrollPanelModule,
+    InputTextModule, TabViewModule,
+    NgFor, NgIf, TableModule,
+    MultiSelectModule, FormsModule,
+    ButtonModule, ScrollPanelModule,
     DialogModule
   ],
   templateUrl: './infos.component.html',
@@ -46,24 +42,33 @@ export class InfosComponent implements OnInit {
   iniCols() {
     this.cols = [
       { field: 'hex', header: 'HEX' },
-      { field: 'charCode', header: 'CHARCODE' },
-      { field: 'binary', header: 'BINÁRIO' },
       { field: 'decimal', header: 'DECIMAL' },
-      { field: 'octal', header: 'OCTAL' }
+      { field: 'octal', header: 'OCTAL' },
+      { field: 'binary', header: 'BINÁRIO' },
+      { field: 'charCode', header: 'CHARCODE' },
+      { field: 'html', header: 'HTML', escape: false },
     ];
   }
 
   initInfos() {
     for (let i = 0; i < 256; i++) {
       const hex = this.decimalToHex(i);
-      const charCode = this.getAsciiRepresentation(i);
-      const binary = this.decimalToBinary(i);
       const decimal = i.toString();
       const octal = this.decimalToOctal(i);
-
-      this.infos.push({ hex, binary, decimal, octal, charCode });
+      const binary = this.decimalToBinary(i);
+      let html;
+      if (i >= 32 && i <= 126) {
+        html = `&#${i};`;
+      } else if (i === 127) {
+        html = 'DEL';
+      } else {
+        html = '&nbsp;';
+      }
+      const charCode = this.getAsciiRepresentation(i);
+      this.infos.push({ hex, decimal, octal, binary, html, charCode });
     }
   }
+
 
 
   decimalToHex(decimal: number): string {
@@ -80,25 +85,48 @@ export class InfosComponent implements OnInit {
 
 
   getAsciiRepresentation(code: number): string {
-    if (code >= 0 && code < 32) {
+    if (code >= 0 && code <= 32) {
       const controlCharacters = [
-        'NUL (NULL)', 'SOH (Start of Heading)', 'STX (Start of Text)',
-        'ETX (End of Text)', 'EOT (End of Transmission)',
-        'ENQ (Enquiry)', 'ACK (Acknowledgement)', 'BEL (Bell)',
-        'BS (Backspace)', 'HT (Horizontal Tab)', 'LF (Line Feed)',
-        'VT (Vertical Tab)', 'FF(Form Feed)', 'CR (Carriage Return)',
-        'SO (Shift Out)', 'SI (Shift In)', 'DLE (Data Link Escape)', 'DC1 (Device Control 1)',
-        'DC2 (Device Control 2)', 'DC3 (Device Control 3)',
-        'DC4(Device Control 4)', 'NAK (Negative Acknowledgement)', 'SYN (Synchronous Idle)',
-        'ETB (End of Transmission Block)', 'CAN(cancel)', 'EM (End of Medium)',
-        'SUB (Substitute)', 'ESC (Escape)', 'FS (File Separator)', 'GS (Group Separator)',
-        'RS (Record Separator)', 'US (Unit Separator)'
+        'NUL (NULL) - Nulo',
+        'SOH (Start of Heading) - Início do cabeçalho',
+        'STX (Start of Text) - Início do texto',
+        'ETX (End of Text) - Fim do texto',
+        'EOT (End of Transmission) - Fim da transmissão',
+        'ENQ (Enquiry) - Interrogação',
+        'ACK (Acknowledgement) - Confirmação',
+        'BEL (Bell) - Sino',
+        'BS (Backspace) - Retrocesso',
+        'HT (Horizontal Tab) - Tabulação Horizontal',
+        'LF (Line Feed) - Avanço de linha',
+        'VT (Vertical Tab) - Tabulação Vertical',
+        'FF (Form Feed) - Avanço de página',
+        'CR (Carriage Return) - Retorno de Carro',
+        'SO (Shift Out) - Deslocamento para fora',
+        'SI (Shift In) - Deslocamento para dentro',
+        'DLE (Data Link Escape) - Escape de Link de Dados',
+        'DC1 (Device Control 1) - Controle de Dispositivo 1',
+        'DC2 (Device Control 2) - Controle de Dispositivo 2',
+        'DC3 (Device Control 3) - Controle de Dispositivo 3',
+        'DC4 (Device Control 4) - Controle de Dispositivo 4',
+        'NAK (Negative Acknowledgement) - Resposta Negativa',
+        'SYN (Synchronous Idle) - Ocioso Síncrono',
+        'ETB (End of Transmission Block) - Fim do Bloco de Transmissão',
+        'CAN (Cancel) - Cancelamento',
+        'EM (End of Medium) - Fim do Meio',
+        'SUB (Substitute) - Substituto',
+        'ESC (Escape) - Escape',
+        'FS (File Separator) - Separador de Arquivo',
+        'GS (Group Separator) - Separador de Grupo',
+        'RS (Record Separator) - Separador de Registro',
+        'US (Unit Separator) - Separador de Unidade',
+        'SPACE ( " " ) - Espaço em branco'
       ];
       return controlCharacters[code];
     } else if (code === 127) {
-      return 'DEL';
+      return 'DEL (Delete) - Deletar';
     } else {
       return String.fromCharCode(code);
     }
+
   }
 }

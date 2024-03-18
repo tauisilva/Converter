@@ -31,4 +31,11 @@ export class AppComponent {
   title = 'converter';
   value: any = null;
   init: boolean = false;
+
+  reload() {
+    this.init = false;
+    setTimeout(() => {
+      this.init = true;
+    }, 500)
+  }
 }
