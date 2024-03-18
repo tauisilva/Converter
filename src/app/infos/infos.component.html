@@ -1,0 +1,44 @@
+<p-table styleClass="p-datatable-striped" #dt1 [scrollable]="true" scrollHeight="30vh" [columns]="cols" [value]="infos"
+  [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-end align-items-center">
+      <section class="flex gap-2">
+        <span class="p-input-icon-left ml-auto">
+          <i class="bi bi-search"></i>
+          <input pInputText type="text" (input)="dt1?.filterGlobal($any($event.target).value, 'contains')"
+            placeholder="Search keyword" />
+        </span>
+        <p-button (click)="visible = true" label="Infos" [text]="true" severity="info"></p-button>
+      </section>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th [pSortableColumn]="col.field" style="width:20%" *ngFor="let col of columns">
+        {{ col.header }}<p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        {{ rowData[col.field] }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-dialog header="Caracteres de controle" [(visible)]="visible" styleClass="w-10 md:w-6 md:h-auto">
+  <section class="w-full dial">
+    <p-scrollPanel [style]="{ width: '100%', height: '100%' }">
+      <ol>
+        @for (item of caracInfos; track $index) {
+        <li class="list-disc">
+          <span class="font-bold">{{item.nome}} - </span>
+          <span class="font-semibold">{{item.fullNome}} : </span>
+          <span class="text-secundary text-sm">{{item.descricao}}</span>
+        </li>
+        }
+      </ol>
+    </p-scrollPanel>
+  </section>
+</p-dialog>
