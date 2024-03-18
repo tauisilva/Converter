@@ -1,14 +1,12 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { ScrollPanelModule } from 'primeng/scrollpanel';
+
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
-import { caracteresDeControle } from './caracteres';
 
 @Component({
   selector: 'app-infos',
@@ -17,8 +15,7 @@ import { caracteresDeControle } from './caracteres';
     InputTextModule, TabViewModule,
     NgFor, NgIf, TableModule,
     MultiSelectModule, FormsModule,
-    ButtonModule, ScrollPanelModule,
-    DialogModule
+    ButtonModule
   ],
   templateUrl: './infos.component.html',
   styleUrl: './infos.component.scss',
@@ -28,15 +25,10 @@ import { caracteresDeControle } from './caracteres';
 export class InfosComponent implements OnInit {
   infos: any[] = [];
   cols: any[] = [];
-  caracInfos = caracteresDeControle;
-  visible: boolean = false;
-
-  constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.iniCols();
     this.initInfos();
-    console.log(this.caracInfos)
   }
 
   iniCols() {

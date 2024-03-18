@@ -2,10 +2,10 @@
   <section class="w-full shadow-1 p-2 surface-card border-1 surface-border border-round-2xl">
     <p-scrollPanel [style]="{width: '100%', height: '100%'}" styleClass="styleClass">
       <table class="w-full">
-        <caption>Conversão completa</caption>
+        <caption class="font-semibold capitalize py-1"> {{type}} - Conversão completa</caption>
         <thead>
-          <tr class="text-center">
-            <th>Tipo</th>
+          <tr>
+            <th class="w-auto text-left">Tipo</th>
             <th>Valor</th>
           </tr>
         </thead>
@@ -21,9 +21,9 @@
   <section class="w-full shadow-1 p-2 surface-card border-1 surface-border border-round-2xl">
     <p-scrollPanel [style]="{width: '100%', height: '100%'}" styleClass="styleClass">
       <table class="w-full">
-        <caption>Conversão individual</caption>
+        <caption class="font-semibold capitalize py-1"> {{type}} - Conversão individual</caption>
         <thead>
-          <tr>
+          <tr class="text-left">
             <th>Character</th>
             <th>HEX</th>
             <th>ASCII</th>

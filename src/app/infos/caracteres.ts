@@ -33,6 +33,16 @@ export const caracteresDeControle = [
   { nome: 'US', fullNome: 'Unit Separator', descricao: 'Usado para separar e identificar unidades de dados em um fluxo de dados.' },
 ];
 
+export const informacoes = [
+  { nome: 'Ø', descricao: 'Optei por utilizar o "Ø" para representar o " " pois é frequentemente usada para representar o conceito de "vazio" ou "nulo" em diversos contextos, incluindo matemática, linguagens de programação e outras áreas. Em muitos casos, é empregada para denotar conjuntos vazios ou valores ausentes em estruturas de dados .' },
+  { nome: 'Caractere', descricao: 'Representa um único caractere, como uma letra, número, símbolo ou emoji. É a unidade básica de texto em linguagens de programação e comunicação.' },
+  { nome: 'Hexadecimal (Hex)', descricao: 'Um sistema de numeração posicional que utiliza 16 símbolos, variando de 0 a 9 e de A a F, para representar valores. É comumente usado na programação para representar bytes de dados e endereços de memória.' },
+  { nome: 'ASCII', descricao: 'Sigla para "American Standard Code for Information Interchange". É uma codificação de caracteres que atribui um valor numérico único a cada caractere, incluindo letras, números, sinais de pontuação e caracteres de controle. ASCII é amplamente utilizado em sistemas de computador e comunicação.' },
+  { nome: 'Binário', descricao: 'Um sistema de numeração posicional que utiliza apenas dois símbolos, 0 e 1, para representar valores. É a base da computação digital, onde cada bit representa um estado de ligado/desligado, verdadeiro/falso ou 0/1.' },
+  { nome: 'Decimal', descricao: 'Um sistema de numeração posicional que utiliza 10 símbolos, variando de 0 a 9, para representar valores. É o sistema de numeração mais comum em uso diário, usado em matemática, contagem e finanças.' },
+  { nome: 'Octal', descricao: 'Um sistema de numeração posicional que utiliza oito símbolos, variando de 0 a 7, para representar valores. Embora menos comum que o decimal e o hexadecimal, o sistema octal é utilizado em algumas áreas da computação, especialmente em programação de baixo nível.' }
+];
+
 export const controlChar = [
   'NUL (NULL)',
   'SOH (Start of Heading)',

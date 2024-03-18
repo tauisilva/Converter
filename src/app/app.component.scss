@@ -3,3 +3,32 @@
   gap: .5rem;
   align-items: center;
 }
+
+.dial {
+  height: 30vh;
+}
+
+.p-datatable .p-datatable-header {
+  border-top: none;
+  background: none;
+}
+
+.p-dialog {
+  .p-dialog-header {
+    padding: .5rem 1rem;
+  }
+
+  .p-dialog-content {
+    padding: 0 1rem 1rem 1rem;
+  }
+}
+
+.p-tabview {
+  .p-tabview-panels {
+    padding: 0;
+  }
+
+  .p-tabview-nav li .p-tabview-nav-link {
+    padding: .5rem;
+  }
+}
