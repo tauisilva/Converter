@@ -12,14 +12,12 @@ import { TableService } from './table.service';
   encapsulation: ViewEncapsulation.None
 })
 export class TableComponent implements OnInit {
-  @Input() value: any;
-  private service = inject(TableService);
-  type: string = '';
-  completeConversion: { [key: string]: string[] } = {};
-
-  convertedValues: {
-    [key: string]:
-    {
+  @Input() value: any; // Valor de entrada fornecido para a tabela
+  private service = inject(TableService); // Serviço para lidar com operações de tabela
+  type: string = ''; // Tipo do valor fornecido
+  completeConversion: { [key: string]: string[] } = {}; // Conversão completa dos valores
+  convertedValues: { // Valores convertidos para cada formato
+    [key: string]: {
       caractere: string,
       hex: string,
       ascii: string,
@@ -30,113 +28,119 @@ export class TableComponent implements OnInit {
   } = {};
 
   async ngOnInit(): Promise<void> {
-    await this.convertValues();
+    await this.convertValues(); // Inicia a conversão dos valores na inicialização do componente
   }
 
   async convertValues(): Promise<void> {
-    const valueType = await this.service.detectType(this.value);
-    this.type = valueType;
+    const valueType = await this.service.detectType(this.value); // Detecta o tipo do valor fornecido
+    this.type = valueType; // Atualiza o tipo
     switch (valueType) {
       case 'binary':
-        this.convertBinary();
+        this.convertBinary(); // Converte valores binários
         break;
       case 'octal':
-        this.convertOctal();
+        this.convertOctal(); // Converte valores octais
         break;
       case 'decimal':
-        this.convertDecimal();
+        this.convertDecimal(); // Converte valores decimais
         break;
       case 'hex':
-        this.convertHex();
+        this.convertHex(); // Converte valores hexadecimais
         break;
       default:
-        this.convertAscii();
+        this.convertAscii(); // Converte valores ASCII ou de outra forma
     }
   }
 
+  // Método para converter valores ASCII
   convertAscii(): void {
     for (const char of this.value) {
-      const charCode = char.charCodeAt(0);
-      this.convertedValues[char] = this.service.convertToValues(charCode);
-      this.updateCompleteConversion(this.convertedValues[char]);
+      const charCode = char.charCodeAt(0); // Obtém o código ASCII do caractere
+      this.convertedValues[char] = this.service.convertToValues(charCode); // Converte para diferentes formatos
+      this.updateCompleteConversion(this.convertedValues[char]); // Atualiza a conversão completa
     }
   }
 
+  // Método para converter valores binários
   convertBinary(): void {
-    let binaryBytes = this.value.replace(/\s+/g, '').match(/.{1,8}/g);
+    let binaryBytes = this.value.replace(/\s+/g, '').match(/.{1,8}/g); // Separa os bytes binários
     if (!binaryBytes) {
-      binaryBytes = this.value.split(',');
+      binaryBytes = this.value.split(','); // Separa por vírgula se não houver espaços
       if (!binaryBytes[0]) {
-        binaryBytes = this.value.split('|');
+        binaryBytes = this.value.split('|'); // Separa por barra vertical se não houver vírgulas
       }
     }
     if (!binaryBytes || binaryBytes.length === 0) {
-      console.error('Formato binário inválido.');
+      console.error('Formato binário inválido.'); // Log de erro para formato inválido
       return;
     }
 
     for (const binaryStr of binaryBytes) {
-      const decimal = parseInt(binaryStr, 2);
-      this.convertedValues[binaryStr] = this.service.convertToValues(decimal);
-      this.updateCompleteConversion(this.convertedValues[binaryStr]);
+      const decimal = parseInt(binaryStr, 2); // Converte para decimal
+      this.convertedValues[binaryStr] = this.service.convertToValues(decimal); // Converte para diferentes formatos
+      this.updateCompleteConversion(this.convertedValues[binaryStr]); // Atualiza a conversão completa
     }
   }
 
+  // Método para converter valores octais
   convertOctal(): void {
-    let octalBytes = this.value.replace(/\s+/g, '').match(/.{1,3}/g);
+    let octalBytes = this.value.replace(/\s+/g, '').match(/.{1,3}/g); // Separa os bytes octais
     if (!octalBytes) {
-      octalBytes = this.value.split(',');
+      octalBytes = this.value.split(','); // Separa por vírgula se não houver espaços
       if (!octalBytes[0]) {
-        octalBytes = this.value.split('|');
+        octalBytes = this.value.split('|'); // Separa por barra vertical se não houver vírgulas
       }
     }
     if (!octalBytes || octalBytes.length === 0) {
-      console.error('Formato octal inválido.');
+      console.error('Formato octal inválido.'); // Log de erro para formato inválido
       return;
     }
 
     for (const octalStr of octalBytes) {
-      const decimal = parseInt(octalStr, 8);
-      this.convertedValues[octalStr] = this.service.convertToValues(decimal);
-      this.updateCompleteConversion(this.convertedValues[octalStr]);
+      const decimal = parseInt(octalStr, 8); // Converte para decimal
+      this.convertedValues[octalStr] = this.service.convertToValues(decimal); // Converte para diferentes formatos
+      this.updateCompleteConversion(this.convertedValues[octalStr]); // Atualiza a conversão completa
     }
   }
 
+  // Método para converter valores decimais
   convertDecimal(): void {
-    let decimalValues = this.value.replace(/\s+/g, '').split(',');
+    let decimalValues = this.value.replace(/\s+/g, '').split(','); // Separa os valores decimais
     if (decimalValues.length === 0 || decimalValues[0] === '') {
-      decimalValues = this.value.split('|');
+      decimalValues = this.value.split('|'); // Separa por barra vertical se não houver vírgulas
     }
     if (decimalValues.length === 0 || decimalValues[0] === '') {
-      console.error('Formato decimal inválido.');
+      console.error('Formato decimal inválido.'); // Log de erro para formato inválido
       return;
     }
 
     for (const decimalStr of decimalValues) {
-      const decimal = parseInt(decimalStr, 10);
-      this.convertedValues[decimalStr] = this.service.convertToValues(decimal);
-      this.updateCompleteConversion(this.convertedValues[decimalStr]);
+      const decimal = parseInt(decimalStr, 10); // Mantém o valor decimal
+      this.convertedValues[decimalStr] = this.service.convertToValues(decimal); // Converte para diferentes formatos
+      this.updateCompleteConversion(this.convertedValues[decimalStr]); // Atualiza a conversão completa
     }
   }
 
+  // Método para converter valores hexadecimais
   convertHex(): void {
-    let hexValues = this.value.replace(/\s+/g, '').split(',');
+    let hexValues = this.value.replace(/\s+/g, '').split(','); // Separa os valores hexadecimais
     if (hexValues.length === 0 || hexValues[0] === '') {
-      hexValues = this.value.split('|');
+      hexValues = this.value.split('|'); // Separa por barra vertical se não houver vírgulas
     }
     if (hexValues.length === 0 || hexValues[0] === '') {
-      console.error('Formato hexadecimal inválido.');
+      console.error('Formato hexadecimal inválido.'); // Log de erro para formato inválido
       return;
     }
 
     for (const hexStr of hexValues) {
-      const decimal = parseInt(hexStr, 16);
-      this.convertedValues[hexStr] = this.service.convertToValues(decimal);
-      this.updateCompleteConversion(this.convertedValues[hexStr]);
+      const decimal = parseInt(hexStr, 16); // Converte para decimal
+      this.convertedValues[hexStr] = this.service.convertToValues(decimal); // Converte para diferentes formatos
+      this.updateCompleteConversion(this.convertedValues[hexStr]); // Atualiza a conversão completa
     }
   }
 
+  // Método privado para atualizar a conversão completa dos valores
   private updateCompleteConversion(values: any): void {
-    this.service.setValues(values, this.completeConversion);
+    this.service.setValues(values, this.completeConversion); // Chama o serviço para atualizar os valores
   }
 }

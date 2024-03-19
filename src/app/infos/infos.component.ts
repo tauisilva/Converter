@@ -7,6 +7,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
+import { controlCharacters } from './caracteres';
 
 @Component({
   selector: 'app-infos',
@@ -23,102 +24,70 @@ import { TabViewModule } from 'primeng/tabview';
 })
 
 export class InfosComponent implements OnInit {
-  infos: any[] = [];
-  cols: any[] = [];
+  infos: any[] = []; // Array para armazenar as informações
+  cols: any[] = []; // Array para definir as colunas da tabela
 
   ngOnInit(): void {
-    this.iniCols();
-    this.initInfos();
+    this.iniCols(); // Inicializa as colunas da tabela
+    this.initInfos(); // Inicializa as informações para cada código ASCII
   }
 
+  // Método para inicializar as colunas da tabela
   iniCols() {
     this.cols = [
-      { field: 'hex', header: 'HEX' },
-      { field: 'decimal', header: 'DECIMAL' },
-      { field: 'octal', header: 'OCTAL' },
-      { field: 'binary', header: 'BINÁRIO' },
-      { field: 'charCode', header: 'CHARCODE' },
-      { field: 'html', header: 'HTML', escape: false },
+      { field: 'hex', header: 'HEX' }, // Coluna para representação hexadecimal
+      { field: 'decimal', header: 'DECIMAL' }, // Coluna para representação decimal
+      { field: 'octal', header: 'OCTAL' }, // Coluna para representação octal
+      { field: 'binary', header: 'BINÁRIO' }, // Coluna para representação binária
+      { field: 'charCode', header: 'CHARCODE' }, // Coluna para representação do código ASCII
+      { field: 'html', header: 'HTML', escape: false }, // Coluna para representação HTML
     ];
   }
 
+  // Método para inicializar as informações para cada código ASCII
   initInfos() {
-    for (let i = 0; i < 256; i++) {
-      const hex = this.decimalToHex(i);
-      const decimal = i.toString();
-      const octal = this.decimalToOctal(i);
-      const binary = this.decimalToBinary(i);
+    for (let i = 0; i < 256; i++) { // Itera sobre os códigos ASCII de 0 a 255
+      const hex = this.decimalToHex(i); // Converte para hexadecimal
+      const decimal = i.toString(); // Mantém o valor decimal
+      const octal = this.decimalToOctal(i); // Converte para octal
+      const binary = this.decimalToBinary(i); // Converte para binário
       let html;
-      if (i >= 32 && i <= 126) {
-        html = `&#${i};`;
+      if (i >= 32 && i <= 126) { // Verifica se está dentro do intervalo imprimível
+        html = `&#${i};`; // Obtém a representação HTML
       } else if (i === 127) {
-        html = 'DEL';
+        html = 'DEL'; // Caractere especial DEL
       } else {
-        html = '&nbsp;';
+        html = '&nbsp;'; // Espaço em branco para caracteres não imprimíveis
       }
-      const charCode = this.getAsciiRepresentation(i);
-      this.infos.push({ hex, decimal, octal, binary, html, charCode });
+      const charCode = this.getAsciiRepresentation(i); // Obtém a representação ASCII
+      this.infos.push({ hex, decimal, octal, binary, html, charCode }); // Adiciona as informações ao array
     }
   }
 
-
-
+  // Método para converter decimal para hexadecimal
   decimalToHex(decimal: number): string {
-    return decimal.toString(16).toUpperCase().padStart(2, '0');
+    return decimal.toString(16).toUpperCase().padStart(2, '0'); // Converte e formata para duas casas hexadecimais
   }
 
+  // Método para converter decimal para binário
   decimalToBinary(decimal: number): string {
-    return decimal.toString(2).padStart(8, '0');
+    return decimal.toString(2).padStart(8, '0'); // Converte e formata para oito dígitos binários
   }
 
+  // Método para converter decimal para octal
   decimalToOctal(decimal: number): string {
-    return decimal.toString(8).padStart(3, '0');
+    return decimal.toString(8).padStart(3, '0'); // Converte e formata para três dígitos octais
   }
 
-
+  // Método para obter a representação ASCII
   getAsciiRepresentation(code: number): string {
-    if (code >= 0 && code <= 32) {
-      const controlCharacters = [
-        'NUL (NULL) - Nulo',
-        'SOH (Start of Heading) - Início do cabeçalho',
-        'STX (Start of Text) - Início do texto',
-        'ETX (End of Text) - Fim do texto',
-        'EOT (End of Transmission) - Fim da transmissão',
-        'ENQ (Enquiry) - Interrogação',
-        'ACK (Acknowledgement) - Confirmação',
-        'BEL (Bell) - Sino',
-        'BS (Backspace) - Retrocesso',
-        'HT (Horizontal Tab) - Tabulação Horizontal',
-        'LF (Line Feed) - Avanço de linha',
-        'VT (Vertical Tab) - Tabulação Vertical',
-        'FF (Form Feed) - Avanço de página',
-        'CR (Carriage Return) - Retorno de Carro',
-        'SO (Shift Out) - Deslocamento para fora',
-        'SI (Shift In) - Deslocamento para dentro',
-        'DLE (Data Link Escape) - Escape de Link de Dados',
-        'DC1 (Device Control 1) - Controle de Dispositivo 1',
-        'DC2 (Device Control 2) - Controle de Dispositivo 2',
-        'DC3 (Device Control 3) - Controle de Dispositivo 3',
-        'DC4 (Device Control 4) - Controle de Dispositivo 4',
-        'NAK (Negative Acknowledgement) - Resposta Negativa',
-        'SYN (Synchronous Idle) - Ocioso Síncrono',
-        'ETB (End of Transmission Block) - Fim do Bloco de Transmissão',
-        'CAN (Cancel) - Cancelamento',
-        'EM (End of Medium) - Fim do Meio',
-        'SUB (Substitute) - Substituto',
-        'ESC (Escape) - Escape',
-        'FS (File Separator) - Separador de Arquivo',
-        'GS (Group Separator) - Separador de Grupo',
-        'RS (Record Separator) - Separador de Registro',
-        'US (Unit Separator) - Separador de Unidade',
-        'SPACE ( " " ) - Espaço em branco'
-      ];
-      return controlCharacters[code];
-    } else if (code === 127) {
-      return 'DEL (Delete) - Deletar';
+    if (code >= 0 && code <= 32) { // Verifica se está dentro do intervalo dos códigos de controle
+      // Array com nomes e descrições dos caracteres de controle
+      return controlCharacters[code]; // Retorna o nome e descrição do caractere de controle
+    } else if (code === 127) { // Verifica se é o caractere DEL
+      return 'DEL (Delete) - Deletar'; // Retorna a descrição do caractere DEL
     } else {
-      return String.fromCharCode(code);
+      return String.fromCharCode(code); // Retorna o caractere correspondente ao código
     }
-
   }
 }

@@ -32,18 +32,19 @@ import { TableComponent } from './table/table.component';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
+  title = 'converter | ASCII'; // Título da aplicação
+  value: any = null; // Valor inicial para a entrada de dados
+  init: boolean = false; // Indica se a aplicação foi inicializada
+  visible: boolean = false; // Indica se um componente é visível na interface
+  caracInfos = caracteresDeControle; // Informações sobre caracteres de controle
+  outrasInfos = informacoes; // Outras informações relevantes
 
-  title = 'converter | ASCII';
-  value: any = null;
-  init: boolean = false;
-  visible: boolean = false;
-  caracInfos = caracteresDeControle;
-  outrasInfos = informacoes;
-
+  // Método para recarregar a aplicação
+  // Necessario para limpeza dos dados e evitar uso de lixo
   reload() {
-    this.init = false;
+    this.init = false; // Define que a aplicação não está inicializada
     setTimeout(() => {
-      this.init = true;
-    }, 500)
+      this.init = true; // Define que a aplicação está inicializada após um pequeno intervalo
+    }, 500); // Tempo de espera antes de reinicializar a aplicação (500ms)
   }
 }
