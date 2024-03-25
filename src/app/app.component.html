@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<p-toast position="bottom-center" key="bc"></p-toast>
 <p-confirmPopup></p-confirmPopup>
 <section class="w-full justify-content-between flex flex-column gap-2 px-2 h-full text-color">
   <section class="w-full h-full">
@@ -17,29 +17,34 @@
           <input class="w-full" pInputText id="txt" [(ngModel)]="value" (ngModelChange)="onInputChange($event)" />
           <label for="txt">Insira os caracteres</label>
         </span>
-        <p-button *ngIf="value !== null && !init" severity="success" [disabled]="value == null"
+        <p-button *ngIf="value !== null && !init && !refresh" severity="success" [disabled]="value == null"
           (onClick)="confirm($event)" icon="pi pi-check" size="small">
           <span class="px-1 font-medium"><i class="bi bi-caret-right-fill"></i></span>
         </p-button>
-        <p-button *ngIf="value !== null" [disabled]="value == null" (onClick)="reload($event)" severity="info"
-          icon="pi pi-check" size="small">
+        <p-button *ngIf="value !== null && init" [disabled]="value == null" (onClick)="confirm($event, true)"
+          severity="info" icon="pi pi-check" size="small">
           <span class="px-1"><i class="bi bi-arrow-clockwise"></i></span>
         </p-button>
       </section>
-      <section *ngIf="msg !== null" class="md:w-6 border-red-500 border-1 border-round w-full">
+      <section *ngIf="msg !== null" class="text-center border-red-500 border-1 border-round w-full">
         <p class="px-2 font-medium">
           Os caracteres [<strong>{{msg}}</strong>] não pertencem à tabela <strong>ASCII</strong>.
         </p>
       </section>
     </section>
-    <section *ngIf="!init" class="w-full noInit flex flex-column align-items-center">
+    <section *ngIf="!init && !refresh" class="w-full noInit flex flex-column align-items-center">
       <p class="text-md md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para iniciar!</p>
       <section class="w-full md:w-3">
         <img class="w-auto h-full" src="assets/gif.svg">
       </section>
     </section>
+    <section class="w-full h-auto flex justify-content-center" *ngIf="refresh">
+      <section class="w-3">
+        <img class="w-full border-circle h-full" src="assets/bixinho.gif" alt="">
+      </section>
+    </section>
   </section>
-  @if (init) {
+  @if (init && !refresh) {
   <section class="w-full h-full">
     <section class="flex gap-2 justify-content-end">
       <span (click)="visible = true" class="font-bold text-blue-500 cursor-pointer text-2xl">
