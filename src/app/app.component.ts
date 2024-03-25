@@ -54,30 +54,30 @@ export class AppComponent {
   verifyCaracteres(value: string) {
     let invalidCharacters = '';
 
+    // Reiniciando a lista de caracteres válidos
+    this.validCharacters = '';
+
+    // Verificando cada caractere da entrada do usuário
+    for (let i = 0; i < value.length; i++) {
+      const char = value[i];
+      if (this.isAscii(char)) {
+        this.validCharacters += char; // Concatenando caracteres válidos
+      } else {
+        invalidCharacters += char; // Concatenando caracteres inválidos
+      }
+    }
+
+    // Se houver caracteres inválidos, exibe uma mensagem de erro
+    if (invalidCharacters !== '' && this.msg !== invalidCharacters) {
+      this.showMessage(
+        'error',
+        'Caracteres Inválidos',
+        `Use apenas caracteres pertencentes à tabela ASCII.`
+      );
+      this.msg = invalidCharacters;
+    }
     // Verificar se houve mudança nos caracteres inválidos
     if (value !== this.previousInput) {
-      // Reiniciando a lista de caracteres válidos
-      this.validCharacters = '';
-
-      // Verificando cada caractere da entrada do usuário
-      for (let i = 0; i < value.length; i++) {
-        const char = value[i];
-        if (this.isAscii(char)) {
-          this.validCharacters += char; // Concatenando caracteres válidos
-        } else {
-          invalidCharacters += char; // Concatenando caracteres inválidos
-        }
-      }
-
-      // Se houver caracteres inválidos, exibe uma mensagem de erro
-      if (invalidCharacters !== '') {
-        this.showMessage(
-          'error',
-          'Caracteres Inválidos',
-          `Use apenas caracteres pertencentes à tabela ASCII.`
-        );
-        this.msg = invalidCharacters;
-      }
     }
 
     // Atualizar a entrada anterior
