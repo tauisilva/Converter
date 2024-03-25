@@ -45,15 +45,22 @@ export class TableComponent implements OnInit {
 
   // Método para converter o valor de entrada em caracteres ASCII
   convertValue(value: string): void {
+    const convertedSet = new Set(); // Conjunto para armazenar caracteres já convertidos
+
     for (let i = 0; i < value.length; i++) {
       const charCode = value.charCodeAt(i);
       if (!isNaN(charCode)) {
-        const conversionResult = this.convertCharacter(charCode);
-        this.convertedCharacters.push(conversionResult);
+        // Verifica se o caractere já foi convertido
+        if (!convertedSet.has(charCode)) {
+          const conversionResult = this.convertCharacter(charCode);
+          this.convertedCharacters.push(conversionResult);
+          convertedSet.add(charCode); // Adiciona o código do caractere ao conjunto
+        }
       }
     }
     console.table(this.convertedCharacters); // Exibe os caracteres convertidos no console em forma de tabela
   }
+
 
   // Método para converter um caractere em suas representações ASCII
   convertCharacter(charCode: number) {

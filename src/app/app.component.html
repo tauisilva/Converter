@@ -21,7 +21,7 @@
           (onClick)="confirm($event)" icon="pi pi-check" size="small">
           <span class="px-1 font-medium"><i class="bi bi-caret-right-fill"></i></span>
         </p-button>
-        <p-button *ngIf="value !== null" [disabled]="value == null" (onClick)="reload()" severity="info"
+        <p-button *ngIf="value !== null" [disabled]="value == null" (onClick)="reload($event)" severity="info"
           icon="pi pi-check" size="small">
           <span class="px-1"><i class="bi bi-arrow-clockwise"></i></span>
         </p-button>
@@ -48,6 +48,13 @@
       </span>
     </section>
     <app-table [value]="validCharacters"></app-table>
+  </section>
+  }@else {
+  <section class="w-full flex flex-column align-items-center h-full">
+    <p class="text-md md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para iniciar!</p>
+    <section class="w-full md:w-3 h-full">
+      <img class="w-auto h-full" src="assets/gif.svg">
+    </section>
   </section>
   }
 </section>

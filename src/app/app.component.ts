@@ -79,7 +79,7 @@ export class AppComponent {
   }
 
   // Método para recarregar o componente
-  reload() {
+  reload(event: Event) {
     this.init = false;
     this.msg = null;
     setTimeout(() => {
