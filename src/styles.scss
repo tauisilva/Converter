@@ -13,3 +13,8 @@ body {
 * {
   font-family: 'Noto Sans', sans-serif;
 }
+
+.p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
+  background: #F5F3FF;
+  color: #6D28D9
+}

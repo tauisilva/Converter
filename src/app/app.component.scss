@@ -4,12 +4,16 @@
   align-items: center;
 }
 
+.top {
+  height: 30dvh;
+}
+
 .dial {
-  height: 30vh;
+  height: 50vh;
 }
 
 .p-datatable .p-datatable-header {
-  border-top: none;
+  border: none;
   background: none;
 }
 

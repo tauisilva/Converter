@@ -3,7 +3,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { MultiSelectModule } from 'primeng/multiselect';
 
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
@@ -15,8 +14,7 @@ import { controlCharacters } from './caracteres';
   imports: [
     InputTextModule, TabViewModule,
     NgFor, NgIf, TableModule,
-    MultiSelectModule, FormsModule,
-    ButtonModule
+    FormsModule, ButtonModule
   ],
   templateUrl: './infos.component.html',
   styleUrl: './infos.component.scss',

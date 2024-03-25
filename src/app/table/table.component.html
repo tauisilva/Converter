@@ -1,48 +1,28 @@
-<section class="flex h-full pt-1 flex-column gap-2 md:flex-row">
-  <section class="w-full shadow-1 p-2 surface-card border-1 surface-border border-round-2xl">
-    <p-scrollPanel [style]="{width: '100%', height: '100%'}" styleClass="styleClass">
-      <table class="w-full">
-        <caption class="font-semibold capitalize py-1"> {{type}} - Conversão completa</caption>
-        <thead>
-          <tr>
-            <th class="w-auto text-left">Tipo</th>
-            <th>Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let type of completeConversion | keyvalue">
-            <td class="font-semibold px-2">{{ type.key }}</td>
-            <td>{{ type.value.join(', ') }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </p-scrollPanel>
-  </section>
-  <section class="w-full shadow-1 p-2 surface-card border-1 surface-border border-round-2xl">
-    <p-scrollPanel [style]="{width: '100%', height: '100%'}" styleClass="styleClass">
-      <table class="w-full">
-        <caption class="font-semibold capitalize py-1"> {{type}} - Conversão individual</caption>
-        <thead>
-          <tr class="text-left">
-            <th>Character</th>
-            <th>HEX</th>
-            <th>ASCII</th>
-            <th>BINARY</th>
-            <th>DECIMAL</th>
-            <th>OCTAL</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let entry of convertedValues | keyvalue">
-            <td class="font-semibold px-2">{{ entry.key }}</td>
-            <td>{{ entry.value.hex }}</td>
-            <td>{{ entry.value.ascii }}</td>
-            <td>{{ entry.value.binary }}</td>
-            <td>{{ entry.value.decimal }}</td>
-            <td>{{ entry.value.octal }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </p-scrollPanel>
-  </section>
-</section>
+<p-table styleClass="p-datatable-striped p-datatable-gridlines" #dt1 [scrollable]="true" scrollHeight="60dvh"
+  [columns]="cols" [value]="convertedCharacters" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-end align-items-center">
+      <section class="flex gap-2">
+        <span class="p-input-icon-left w-10 md:w-auto">
+          <i class="bi bi-search"></i>
+          <input pInputText type="text" (input)="dt1?.filterGlobal($any($event.target).value, 'contains')"
+            placeholder="Search keyword" />
+        </span>
+      </section>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th [pSortableColumn]="col.field" style="width:20%" *ngFor="let col of columns">
+        {{ col.header }}<p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        {{ rowData[col.field] }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
