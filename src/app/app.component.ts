@@ -75,7 +75,8 @@ export class AppComponent {
   // Método para verificar se um caractere é ASCII
   isAscii(char: string): boolean {
     const regexASCII = /^[\x00-\x7F]*$/;
-    return regexASCII.test(char);
+    const regexASCIIExtended = /^[\x00-\xFF]*$/;
+    return regexASCIIExtended.test(char);
   }
 
   // Método para recarregar o componente

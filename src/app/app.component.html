@@ -32,6 +32,12 @@
         </p>
       </section>
     </section>
+    <section *ngIf="!init" class="w-full noInit flex flex-column align-items-center">
+      <p class="text-md md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para iniciar!</p>
+      <section class="w-full md:w-3">
+        <img class="w-auto h-full" src="assets/gif.svg">
+      </section>
+    </section>
   </section>
   @if (init) {
   <section class="w-full h-full">
@@ -48,13 +54,6 @@
       </span>
     </section>
     <app-table [value]="validCharacters"></app-table>
-  </section>
-  }@else {
-  <section class="w-full flex flex-column align-items-center h-full">
-    <p class="text-md md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para iniciar!</p>
-    <section class="w-full md:w-3 h-full">
-      <img class="w-auto h-full" src="assets/gif.svg">
-    </section>
   </section>
   }
 </section>
