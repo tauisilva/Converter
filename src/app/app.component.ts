@@ -75,6 +75,8 @@ export class AppComponent {
         `Use apenas caracteres pertencentes à tabela ASCII.`
       );
       this.msg = invalidCharacters;
+    } else {
+      this.msg = null;
     }
     // Verificar se houve mudança nos caracteres inválidos
     if (value !== this.previousInput) {
