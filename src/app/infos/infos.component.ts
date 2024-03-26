@@ -42,25 +42,36 @@ export class InfosComponent implements OnInit {
     ];
   }
 
+  // Recursividade
+  // A cada chamada da função initInfos(),
+  //  um código ASCII é processado e as informações correspondentes são adicionadas ao array infos.
+  //  Em seguida, a função se chama novamente com o próximo código ASCII no intervalo especificado.
+  //  Esse processo continua até que o código ASCII atinja o limite superior do intervalo especificado,
+  // momento em que a recursão para devido à condição de parada.
+
   // Método para inicializar as informações para cada código ASCII
-  initInfos() {
-    for (let i = 0; i < 256; i++) { // Itera sobre os códigos ASCII de 0 a 255
-      const hex = this.decimalToHex(i); // Converte para hexadecimal
-      const decimal = i.toString(); // Mantém o valor decimal
-      const octal = this.decimalToOctal(i); // Converte para octal
-      const binary = this.decimalToBinary(i); // Converte para binário
-      let html;
-      if (i >= 32 && i <= 126) { // Verifica se está dentro do intervalo imprimível
-        html = `&#${i};`; // Obtém a representação HTML
-      } else if (i === 127) {
-        html = 'DEL'; // Caractere especial DEL
-      } else {
-        html = '&nbsp;'; // Espaço em branco para caracteres não imprimíveis
-      }
-      const charCode = this.getAsciiRepresentation(i); // Obtém a representação ASCII
-      this.infos.push({ hex, decimal, octal, binary, html, charCode }); // Adiciona as informações ao array
+  initInfos(start: number = 0, end: number = 255) {
+    if (start > end) return; // Condição de parada da recursão
+
+    const hex = this.decimalToHex(start); // Converte para hexadecimal
+    const decimal = start.toString(); // Mantém o valor decimal
+    const octal = this.decimalToOctal(start); // Converte para octal
+    const binary = this.decimalToBinary(start); // Converte para binário
+    let html;
+    if (start >= 32 && start <= 126) { // Verifica se está dentro do intervalo imprimível
+      html = `&#${start};`; // Obtém a representação HTML
+    } else if (start === 127) {
+      html = 'DEL'; // Caractere especial DEL
+    } else {
+      html = '&nbsp;'; // Espaço em branco para caracteres não imprimíveis
     }
+    const charCode = this.getAsciiRepresentation(start); // Obtém a representação ASCII
+    this.infos.push({ hex, decimal, octal, binary, html, charCode }); // Adiciona as informações ao array
+
+    // Chamada recursiva para o próximo código ASCII
+    this.initInfos(start + 1, end);
   }
+
 
   // Método para converter decimal para hexadecimal
   decimalToHex(decimal: number): string {
