@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { DialogModule } from 'primeng/dialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TabViewModule } from 'primeng/tabview';
@@ -14,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
 import { caracteresDeControle, informacoes } from './infos/caracteres';
 import { InfosComponent } from './infos/infos.component';
 import { TableComponent } from './table/table.component';
+
 
 @Component({
   selector: 'app-root',
@@ -23,7 +25,7 @@ import { TableComponent } from './table/table.component';
     InputTextModule, ButtonModule, TableComponent,
     NgIf, InfosComponent, ScrollPanelModule,
     DialogModule, TabViewModule, ToastModule,
-    ConfirmPopupModule
+    ConfirmPopupModule, InputSwitchModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -41,7 +43,7 @@ export class AppComponent {
   outrasInfos = informacoes; // Outras informações sobre o componente
   msg: any = null; // Mensagem de erro ou aviso
   previousInput: string = ''; // Armazena a entrada anterior do usuário
-
+  isAscExtends: boolean = false; // Modifica entre AscII(entre 0 e 127) e AscII Extends(128-255)
   // Injetando os serviços necessários
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
@@ -91,7 +93,9 @@ export class AppComponent {
   isAscii(char: string): boolean {
     const regexASCII = /^[\x00-\x7F]*$/;
     const regexASCIIExtended = /^[\x00-\xFF]*$/;
-    return regexASCIIExtended.test(char);
+    return this.isAscExtends ?
+      regexASCIIExtended.test(char) :
+      regexASCII.test(char);
   }
 
   // Método para recarregar o componente
@@ -145,7 +149,11 @@ export class AppComponent {
         }
       }
     } else {
-      this.showMessage('warn', 'Verifique os dados', 'É necessário ao menos um caractere válido e compatível com a ASCII estendida');
+      this.showMessage(
+        'warn',
+        'Verifique os dados',
+        'É necessário ao menos um caractere válido e compatível com a ASCII estendida'
+      );
       this.msg = null;
       this.init = false;
       this.value = null;

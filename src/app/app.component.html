@@ -2,17 +2,24 @@
 <p-confirmPopup></p-confirmPopup>
 <section class="w-full justify-content-between flex flex-column gap-2 px-2 h-full text-color">
   <section class="w-full h-full">
-    <section class="w-full py-2 flex flex-column align-items-center capitalize">
-      <p class="text-2xl pb-1 md:text-3xl m-0 font-bold ">{{title}}</p>
-      <section class="flex gap-2">
-        <p-chip label="hex"></p-chip>
-        <p-chip label="binary"></p-chip>
-        <p-chip label="decimal"></p-chip>
-        <p-chip label="octal"></p-chip>
-        <p-chip label="html"></p-chip>
+    <section class="w-full py-2 flex flex justify-content-between capitalize">
+      <p class="text-2xl md:text-3xl m-0 font-bold ">{{title}}</p>
+      <section class="flex w-5 gap-2 justify-content-end">
+        <span (click)="visible = true" class="font-bold text-blue-500 cursor-pointer text-2xl">
+          <i class="bi bi-info-circle-fill"></i>
+        </span>
+        <a class="font-bold text-blue-500 cursor-pointer text-2xl" href="https://www.asciitable.com/" target="_blank"
+          rel="noopener noreferrer">
+          <i class="bi bi-link-45deg"></i>
+        </a>
       </section>
     </section>
-    <section class="w-full py-2 gap-2 flex flex-column align-items-center">
+    <section class="w-full gap-2 flex flex-column align-items-center">
+      <section class="flex align-items-center justify-content-center w-full gap-2 font-bold">
+        <p>ASCII [0-127]</p>
+        <p-inputSwitch [(ngModel)]="isAscExtends"></p-inputSwitch>
+        <p>ASCII - Extends [128 - 255]</p>
+      </section>
       <section class="form md:w-6 w-full">
         <span class="p-float-label w-full">
           <input class="w-full" pInputText id="txt" [(ngModel)]="value" (ngModelChange)="onInputChange($event)" />
@@ -35,6 +42,13 @@
     </section>
     <section *ngIf="!init && !refresh" class="w-full noInit flex flex-column align-items-center">
       <p class="text-md md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para iniciar!</p>
+      <section class="flex gap-2">
+        <p-chip label="hex"></p-chip>
+        <p-chip label="binary"></p-chip>
+        <p-chip label="decimal"></p-chip>
+        <p-chip label="octal"></p-chip>
+        <p-chip label="html"></p-chip>
+      </section>
       <section class="w-full md:w-3">
         <img class="w-auto h-full" src="assets/gif.svg">
       </section>
@@ -48,13 +62,13 @@
   @if (init && !refresh) {
   <section class="w-full h-full">
     <section class="flex gap-2 justify-content-end">
-      <span (click)="visible = true" class="font-bold text-blue-500 cursor-pointer text-2xl">
+      <!-- <span (click)="visible = true" class="font-bold text-blue-500 cursor-pointer text-2xl">
         <i class="bi bi-info-circle-fill"></i>
       </span>
       <a class="font-bold text-blue-500 cursor-pointer text-2xl" href="https://www.asciitable.com/" target="_blank"
         rel="noopener noreferrer">
         <i class="bi bi-link-45deg"></i>
-      </a>
+      </a> -->
       <span (click)="init = false; value = null" class="font-bold text-orange-500 cursor-pointer text-2xl">
         <i class="bi bi-x-circle"></i>
       </span>
@@ -64,7 +78,7 @@
   }
 </section>
 <p-dialog [resizable]="true" [maximizable]="true" [modal]="true" header="Informações" [(visible)]="visible"
-  styleClass="w-10 md:w-6 md:h-auto">
+  styleClass="w-11 md:w-6 md:h-auto">
   <p-tabView>
     <p-tabPanel header="Tabela AscII">
       <section class="w-full dial">

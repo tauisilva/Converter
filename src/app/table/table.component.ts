@@ -27,6 +27,7 @@ export class TableComponent implements OnInit {
 
   // Método chamado durante a inicialização do componente
   ngOnInit(): void {
+    console.log(this.value)
     this.initCols(); // Inicializa as colunas da tabela
     this.convertValue(this.value); // Converte o valor de entrada
   }
