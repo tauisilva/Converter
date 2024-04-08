@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
   //<-------------- Variveis -------------->
 
   title = 'Converter | ASCII'; // Título da página
-  isDark: boolean = false; // Controle do tema
+  isDark: boolean = true; // Controle do tema
   openModal: boolean = false; // Controle do modal com informações 
   isAscExtends: boolean = false; // Modifica entre AscII(entre 0 e 127) e AscII Extends(128-255)
   init: boolean = false; // Indica se o componente foi inicializado
