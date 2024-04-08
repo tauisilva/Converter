@@ -1,5 +1,6 @@
 @import "primeng/resources/themes/lara-light-purple/theme.css";
 @import "primeng/resources/primeng.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 html,
 body {
@@ -11,25 +12,15 @@ body {
 }
 
 * {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
-.p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
-  background: #F5F3FF;
-  color: #6D28D9
-}
-
-.gradient {
-  background-color: #8BC6EC;
-  background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
-
-}
 
 .light {
-  --pastel1: #FEFCF3;
-  --pastel2: #F5EBE0;
-  --pastel3: #F0DBDB;
-  --pastel4: #DBA39A;
+  --pastel1: #F1F1F6;
+  --pastel2: #E1CCEC;
+  --pastel3: #C9B6E4;
+  --pastel4: #BE9FE1;
 }
 
 .dark {
@@ -37,4 +28,9 @@ body {
   --pastel2: #9DB2BF;
   --pastel3: #526D82;
   --pastel4: #27374D;
+}
+
+.p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
+  background: #F5F3FF;
+  color: #6D28D9
 }

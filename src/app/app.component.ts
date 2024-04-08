@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
@@ -10,20 +10,24 @@ import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { caracteresDeControle, informacoes } from './infos/caracteres';
 import { InfosComponent } from './infos/infos.component';
 import { TableComponent } from './table/table.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet, ChipModule, FormsModule,
     InputTextModule, ButtonModule, TableComponent,
-    NgIf, InfosComponent, ScrollPanelModule,
+    NgIf, NgFor, InfosComponent, ScrollPanelModule,
     DialogModule, TabViewModule, ToastModule, TooltipModule,
-    InputSwitchModule, CheckboxModule, ConfirmPopupModule
+    InputSwitchModule, CheckboxModule, ConfirmPopupModule,
+    SkeletonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -38,16 +42,20 @@ export class AppComponent implements OnInit {
   isAscExtends: boolean = false; // Modifica entre AscII(entre 0 e 127) e AscII Extends(128-255)
   init: boolean = false; // Indica se o componente foi inicializado
   refresh: boolean = false; // Atualização dos valores
-  skeleton: { [key: string]: boolean } = {
-    initSkeleton: false,
-    title: false,
-    btns: false,
-    input: false,
-    card: false
+  skeleton: { [key: string]: boolean } = { // Controle de skeleton 
+    title: true,
+    btns: true,
+    input: true,
+    infos: true,
+    history: true,
+    card: true
   };
 
   inputValue: any = null; // Valor de entrada do usuário
   invalidCharactersStack: any; // Pilha para armazenar caracteres inválidos
+  history: any[] = []; // Armazena os 5 ultimos valores
+  caracInfos = caracteresDeControle; // Informações sobre caracteres de controle
+  outrasInfos = informacoes; // Outras informações
 
   //<-------------- Variveis -------------->
 
@@ -57,36 +65,27 @@ export class AppComponent implements OnInit {
 
   //<-------------- Links -------------->
 
-  async ngOnInit(): Promise<void> {
-    this.ativarSkeleton();
+  ngOnInit() {
     let time = 500;
     Object.keys(this.skeleton).forEach((key: string) => {
-      time += 10;
-      if (key !== 'initSkeleton') {
-        this.disableSkeleton(key, time);
-      }
+      time += 300;
+      this.disableSkeleton(key, time);
     });
-    this.skeleton['initSkeleton'] = false;
+    this.history.push({ valor: 'test 🦄' });
   }
 
-  ativarSkeleton(): void {
-    Object.keys(this.skeleton).forEach((key: string) => {
-      this.skeleton[key] = true;
-    });
+  disableSkeleton(key: string, time?: number) {
+    setTimeout(() => {
+      this.skeleton[key] = false;
+    }, time ? time : 500);
   }
 
-  async disableSkeleton(key: string, time?: number) {
-    await new Promise<void>(resolve =>
-      setTimeout(() => {
-        console.log(key, time)
-        this.skeleton[key] = false;
-        resolve();
-      }, time ? time : 500));
-  }
-
-  async initConverter() {
-    this.init = true;
-    await this.verifyCaracteres(this.inputValue);
+  async initConverter(isReload?: boolean) {
+    if (this.inputValue !== '') {
+      this.init = true;
+      await this.verifyCaracteres(this.inputValue);
+      this.manegerHistory(this.inputValue);
+    }
   }
 
   verifyCaracteres(value: any) {
@@ -102,6 +101,25 @@ export class AppComponent implements OnInit {
     }
   }
 
+
+  manegerHistory(value: any) {
+    // Verificar se o valor já existe em history
+    const valueExists = this.history.some(item => item.valor === value);
+    if (!valueExists) {
+      if (this.history?.length < 5) {
+        this.history.push({ valor: value });
+      } else {
+        this.removeItemHistory(0);
+        this.history.push({ valor: value });
+      }
+    }
+  }
+
+  // Método chamado quando há uma mudança na entrada do usuário
+  onInputChange(value: string) {
+    // Verifica se o valor é uma string vazia
+  }
+
   //<-------------- REGEX's -------------->
 
   // Método para verificar se um caractere é ASCII
@@ -115,6 +133,7 @@ export class AppComponent implements OnInit {
 
   //<-------------- REGEX's -------------->
 
+  //<-------------- Get's -------------->
   getIcon(theme?: boolean) {
     if (theme) {
       return this.isDark ? 'bi-sun' : 'bi-moon-stars';
@@ -127,5 +146,9 @@ export class AppComponent implements OnInit {
 
   getTheme() {
     return this.isDark ? 'dark' : 'light';
+  }
+
+  removeItemHistory(index: number) {
+    this.history.splice(index, 1);
   }
 }

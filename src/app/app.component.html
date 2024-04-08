@@ -3,7 +3,12 @@
 <section [className]="getTheme()">
   <section class="w-full flex flex-column h-screen home">
     <section class="toolbar">
+      @if (!skeleton['title']) {
       <p class="text-2xl title md:text-3xl m-0 font-bold ">{{title}}</p>
+      }@else{
+      <p-skeleton height="2rem" [styleClass]="'w-7rem md:w-15rem'"></p-skeleton>
+      }
+      @if (!skeleton['btns']) {
       <section class="flex align-items-center gap-2">
         <span (click)="isDark = !isDark" class="font-bold text-blue-500 cursor-pointer text-xl">
           <i class="bi" [className]="getIcon(true)"></i>
@@ -16,27 +21,120 @@
           <i class="bi bi-info-circle"></i>
         </span>
       </section>
+      }@else {
+      <div class="flex align-items-end">
+        <p-skeleton shape="circle" size="2rem" styleClass="mr-1"></p-skeleton>
+        <p-skeleton shape="circle" size="2rem" styleClass="mr-1"></p-skeleton>
+        <p-skeleton shape="circle" size="2rem" styleClass="mr-1"></p-skeleton>
+      </div>
+      }
     </section>
-    <section class="h-full">
+    <section class="h-auto">
+      @if (!skeleton['input']) {
       <section class="form-input">
         <section class="input w-full md:w-6">
-          <input pTooltip="Marque o checkbox para utilizar ASCII Extends" class="txt" type="text"
-            [(ngModel)]="inputValue" placeholder="Insira os caracteres" tooltipPosition="left">
-          <p-checkbox pTooltip="Utilizar ASCII - Extends" [(ngModel)]="isAscExtends" [binary]="true"
+          <input (ngModelChange)="onInputChange($event)" [autoHide]="false"
+            pTooltip="marque o checkbox para utilizar ASCII Extends" class="txt" type="text" [(ngModel)]="inputValue"
+            placeholder="Insira os caracteres" tooltipPosition="left">
+          <p-checkbox pTooltip="utilizar ASCII - Extends" [(ngModel)]="isAscExtends" [binary]="true"
             inputId="binary"></p-checkbox>
-          <button (click)="initConverter()" class="btn-form">
+          <button [disabled]="inputValue === ''" (click)="initConverter()" class="btn-form">
             <i class="bi" [className]="getIcon()"></i>
           </button>
         </section>
       </section>
+      }@else {
+      <section class="w-full skel-form">
+        <p-skeleton [styleClass]="'w-full'" height="2.3rem" borderRadius="1rem"></p-skeleton>
+      </section>
+      }
+      @if (!skeleton['infos']) {
       <section class="infos">
         <p class="m-0 pt-1 font-bold text-sm md:hidden">Marque o checkbox para utilizar ASCII Extends</p>
       </section>
-      <section *ngIf="init" class="result">
-        <section class="card w-full">
-          <p>{{invalidCharactersStack}}</p>
+      }@else {
+      <section class="pt-1 md:hidden">
+        <section class="px-5">
+          <p-skeleton [styleClass]="'w-full'" height="1rem" borderRadius=".5rem"></p-skeleton>
         </section>
       </section>
+      }
+      @if(!skeleton['history']){
+      <section *ngIf="history && history.length > 0" class="history">
+        @for (item of history; track $index) {
+        <span class="item-history">
+          <p (click)="inputValue = item?.valor; initConverter(true)" pTooltip="converter item" class="m-0">
+            {{item?.valor}} |
+          </p>
+          <i pTooltip="remover item" [autoHide]="false" (click)="removeItemHistory($index)" class="bi bi-x-circle"></i>
+        </span>
+        }
+      </section>
+      }@else {
+      <section class="history">
+        <div class="flex gap-2">
+          <ng-container *ngFor="let item of [1,2,3,4,5]; let i = index">
+            <p-skeleton [styleClass]="'w-3rem h-2rem md:w-10rem'" borderRadius="1rem"></p-skeleton>
+          </ng-container>
+        </div>
+      </section>
+      }
+      @if (!skeleton['card']) {
+      <section *ngIf="init" class="result">
+        <section class="card w-full">
+          <section *ngIf="invalidCharactersStack !== ''" class="">
+            <p class="invalidMsg">
+              Os caracteres [<strong>{{invalidCharactersStack}}</strong>] não pertencem à tabela <strong>ASCII</strong>.
+            </p>
+          </section>
+        </section>
+      </section>
+      }@else {
+      <section class="skel-card">
+        <p-skeleton width="100%" height="100%" borderRadius=".875rem"></p-skeleton>
+      </section>
+      }
     </section>
   </section>
 </section>
+<!-- Modal -->
+<p-dialog [resizable]="true" [maximizable]="true" [modal]="true" header="Informações" [(visible)]="openModal"
+  styleClass="w-11 md:w-6 md:h-auto">
+  <p-tabView>
+    <p-tabPanel header="Tabela AscII">
+      <section class="w-full dial">
+        <app-infos></app-infos>
+      </section>
+    </p-tabPanel>
+    <p-tabPanel header="Caracteres de controle">
+      <section class="w-full dial">
+        <p-scrollPanel [style]="{ width: '100%', height: '100%' }">
+          <ol>
+            @for (item of caracInfos; track $index) {
+            <li class="list-disc">
+              <span class="font-bold">{{item.nome}} - </span>
+              <span class="font-semibold">{{item.fullNome}} : </span>
+              <span class="text-secundary text-sm">{{item.descricao}}</span>
+            </li>
+            }
+          </ol>
+        </p-scrollPanel>
+      </section>
+    </p-tabPanel>
+    <p-tabPanel header="Outras infos">
+      <section class="w-full dial">
+        <p-scrollPanel [style]="{ width: '100%', height: '100%' }">
+          <ol>
+            @for (item of outrasInfos; track $index) {
+            <li class="list-disc">
+              <span class="font-bold">{{item.nome}} - </span>
+              <span class="text-secundary text-sm">{{item.descricao}}</span>
+            </li>
+            }
+          </ol>
+        </p-scrollPanel>
+      </section>
+    </p-tabPanel>
+  </p-tabView>
+</p-dialog>
+<!-- Modal -->
