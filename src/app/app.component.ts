@@ -1,7 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChipModule } from 'primeng/chip';
@@ -34,6 +35,11 @@ import { TableComponent } from './table/table.component';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
+
+  // Injetando os serviços necessários
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+
   //<-------------- Variveis -------------->
 
   title = 'Converter | ASCII'; // Título da página
@@ -53,6 +59,7 @@ export class AppComponent implements OnInit {
 
   inputValue: any = null; // Valor de entrada do usuário
   invalidCharactersStack: any; // Pilha para armazenar caracteres inválidos
+  validCharacters: string = ''; // Armazena os caracteres válidos do escopo ASCII
   history: any[] = []; // Armazena os 5 ultimos valores
   caracInfos = caracteresDeControle; // Informações sobre caracteres de controle
   outrasInfos = informacoes; // Outras informações
@@ -60,9 +67,7 @@ export class AppComponent implements OnInit {
   //<-------------- Variveis -------------->
 
   //<-------------- Links -------------->
-
   link_table = 'https://www.asciitable.com/;'
-
   //<-------------- Links -------------->
 
   ngOnInit() {
@@ -83,24 +88,28 @@ export class AppComponent implements OnInit {
   async initConverter(isReload?: boolean) {
     if (this.inputValue !== '') {
       this.init = true;
-      await this.verifyCaracteres(this.inputValue);
+      if (isReload) {
+        this.reload();
+      } else {
+        await this.verifyCaracteres(this.inputValue);
+      }
       this.manegerHistory(this.inputValue);
     }
   }
 
   verifyCaracteres(value: any) {
-    let validCharacters = '';
+    // Reiniciando a lista de caracteres válidos
+    this.validCharacters = '';
     this.invalidCharactersStack = '';
     for (let i = 0; i < value.length; i++) {
       const char = value[i];
       if (this.isAscii(char)) {
-        validCharacters += char; // Concatenando caracteres válidos
+        this.validCharacters += char; // Concatenando caracteres válidos
       } else {
         this.invalidCharactersStack += char // Concatenando caracteres inválidos
       }
     }
   }
-
 
   manegerHistory(value: any) {
     // Verificar se o valor já existe em history
@@ -120,6 +129,15 @@ export class AppComponent implements OnInit {
     // Verifica se o valor é uma string vazia
   }
 
+  reload() {
+    this.verifyCaracteres(this.inputValue);
+    this.refresh = true;
+    this.init = false;
+    setTimeout(() => {
+      this.init = true;
+      this.refresh = false;
+    }, 500);
+  }
   //<-------------- REGEX's -------------->
 
   // Método para verificar se um caractere é ASCII
@@ -150,5 +168,15 @@ export class AppComponent implements OnInit {
 
   removeItemHistory(index: number) {
     this.history.splice(index, 1);
+  }
+
+  // Método para exibir uma mensagem na interface
+  showMessage(sev: string, summ: string, detail: string) {
+    this.messageService.add({
+      key: 'bc',
+      severity: sev,
+      summary: summ,
+      detail: detail
+    });
   }
 }

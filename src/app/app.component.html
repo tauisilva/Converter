@@ -38,7 +38,7 @@
             placeholder="Insira os caracteres" tooltipPosition="left">
           <p-checkbox pTooltip="utilizar ASCII - Extends" [(ngModel)]="isAscExtends" [binary]="true"
             inputId="binary"></p-checkbox>
-          <button [disabled]="inputValue === ''" (click)="initConverter()" class="btn-form">
+          <button [disabled]="inputValue === ''" (click)="initConverter(init)" class="btn-form">
             <i class="bi" [className]="getIcon()"></i>
           </button>
         </section>
@@ -80,12 +80,15 @@
       </section>
       }
       @if (!skeleton['card']) {
-      <section *ngIf="init" class="result">
+      <section *ngIf="init && !refresh" class="result pt-1">
         <section class="card w-full">
           <section *ngIf="invalidCharactersStack !== ''" class="">
             <p class="invalidMsg">
               Os caracteres [<strong>{{invalidCharactersStack}}</strong>] não pertencem à tabela <strong>ASCII</strong>.
             </p>
+          </section>
+          <section *ngIf="validCharacters !== ''" class="table">
+            <app-table [value]="validCharacters"></app-table>
           </section>
         </section>
       </section>
@@ -97,6 +100,21 @@
     </section>
   </section>
 </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Modal -->
 <p-dialog [resizable]="true" [maximizable]="true" [modal]="true" header="Informações" [(visible)]="openModal"
   styleClass="w-11 md:w-6 md:h-auto">
