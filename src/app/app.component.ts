@@ -67,7 +67,8 @@ export class AppComponent implements OnInit {
   //<-------------- Variveis -------------->
 
   //<-------------- Links -------------->
-  link_table = 'https://www.asciitable.com/;'
+  link_table = 'https://www.asciitable.com/'
+  link_repository = 'https://github.com/tauisilva/Converter'
   //<-------------- Links -------------->
 
   ngOnInit() {
