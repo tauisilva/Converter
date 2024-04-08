@@ -92,9 +92,21 @@
               Por isso eles foram <strong>removidos</strong>!
             </p>
           </section>
-          <section *ngIf="validCharacters !== ''" class="table">
+          @if(validCharacters !== ''){
+          <section class="table">
             <app-table [value]="validCharacters"></app-table>
           </section>
+          }@else {
+          <section class="flex justify-content-center align-items-center">
+          </section>
+          <section class="flex flex-column align-items-center">
+            <p class="text-md text-center md:text-3xl font-bold">Nenhum caractere válido existente na tabela ASCII |
+              ASCII - Extends!</p>
+            <section class="w-full md:w-3">
+              <img class="w-auto h-full border-circle" src="assets/bixinho.gif">
+            </section>
+          </section>
+          }
         </section>
       </section>
       <section *ngIf="!init && !refresh" class="flex flex-column align-items-center">
