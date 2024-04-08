@@ -1,34 +1,143 @@
-.form {
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-}
+.home {
+  background-color: var(--pastel1);
+  color: var(--pastel4);
+  padding: 0 .75rem;
 
-.dial {
-  height: 30vh;
-}
-
-.p-datatable .p-datatable-header {
-  border-top: none;
-  background: none;
-}
-
-.p-dialog {
-  .p-dialog-header {
-    padding: .5rem 1rem;
+  .title {
+    color: var(--pastel4);
+    font-weight: 900;
   }
 
-  .p-dialog-content {
-    padding: 0 1rem 1rem 1rem;
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .75rem 0;
+
+    i {
+      color: var(--pastel4);
+      font-weight: 900;
+    }
+  }
+
+  .form-input {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .input {
+      padding: .5rem 1rem;
+      background: var(--pastel2);
+      border-radius: 15rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+
+      input.txt {
+        all: unset;
+      }
+
+      input.txt {
+        width: 100%;
+        height: 100%;
+        font-size: large;
+      }
+
+      input.txt::placeholder {
+        color: var(--pastel4);
+        font-weight: 500;
+        font-size: large;
+      }
+
+      button.btn-form {
+        all: unset;
+        cursor: pointer;
+        padding-left: .75rem;
+
+        i {
+          color: var(--pastel4);
+        }
+      }
+    }
+
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+      border-color: var(--pastel3);
+    }
+
+    .p-checkbox .p-checkbox-box.p-highlight {
+      border-color: var(--pastel3);
+      background: var(--pastel4);
+    }
+
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+      box-shadow: 0 0 0 0.2rem var(--pastel2);
+      border-color: var(--pastel3);
+    }
+  }
+
+  .infos {
+    display: flex;
+    justify-content: center;
+  }
+
+  .result {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+    height: 90%;
+    overflow: hidden;
+
+    .card {
+      padding: .75rem;
+      height: auto;
+      max-height: 100%;
+      background: var(--pastel4);
+      color: var(--pastel1);
+      border-radius: 14px;
+    }
+
   }
 }
 
-.p-tabview {
-  .p-tabview-panels {
-    padding: 0;
-  }
+// .form {
+//   display: flex;
+//   gap: .5rem;
+//   align-items: center;
+// }
 
-  .p-tabview-nav li .p-tabview-nav-link {
-    padding: .5rem;
-  }
-}
+// .top {
+//   height: 30dvh;
+// }
+
+// .dial {
+//   height: 50vh;
+// }
+
+// .noInit {
+//   height: 40vh;
+// }
+
+// .p-datatable .p-datatable-header {
+//   border: none;
+//   background: none;
+// }
+
+// .p-dialog {
+//   .p-dialog-header {
+//     padding: .5rem 1rem;
+//   }
+
+//   .p-dialog-content {
+//     padding: 0 1rem 1rem 1rem;
+//   }
+// }
+
+// .p-tabview {
+//   .p-tabview-panels {
+//     padding: 0;
+//   }
+
+//   .p-tabview-nav li .p-tabview-nav-link {
+//     padding: .5rem;
+//   }
+// }

@@ -1,83 +1,42 @@
-<section class="w-full flex flex-column gap-2 px-2 h-auto text-color">
-  <section class="w-full py-2 flex flex-column align-items-center capitalize">
-    <p class="text-2xl md:text-3xl m-0 font-bold ">{{title}}</p>
-    <section class="flex gap-2">
-      <p-chip label="hex"></p-chip>
-      <p-chip label="ascii"></p-chip>
-      <p-chip label="binary"></p-chip>
-      <p-chip label="decimal"></p-chip>
-      <p-chip label="octal"></p-chip>
-    </section>
-  </section>
-  <section class="w-full py-2 flex justify-content-center">
-    <section class="form md:w-6 w-full">
-      <span class="p-float-label w-full">
-        <input class="w-full" pInputText id="txt" [(ngModel)]="value" />
-        <label for="txt">Insira os caracteres</label>
-      </span>
-      <p-button *ngIf="value !== null && !init" severity="success" [disabled]="value == null" (onClick)="init = true"
-        icon="pi pi-check" size="small">
-        <span class="px-1 font-medium"><i class="bi bi-caret-right-fill"></i></span>
-      </p-button>
-      <p-button *ngIf="value !== null" [disabled]="value == null" (onClick)="reload()" severity="info"
-        icon="pi pi-check" size="small">
-        <span class="px-1"><i class="bi bi-arrow-clockwise"></i></span>
-      </p-button>
-    </section>
-  </section>
-  @if (init) {
-  <section class="w-full h-full flex flex-column justify-content-between">
-    <section class="w-full h-full">
-      <section class="flex gap-2 justify-content-end">
-        <span (click)="visible = true" class="font-bold text-blue-500 cursor-pointer text-2xl">
-          <i class="bi bi-info-circle-fill"></i>
+<p-toast position="bottom-center" key="bc"></p-toast>
+<p-confirmPopup></p-confirmPopup>
+<section [className]="getTheme()">
+  <section class="w-full flex flex-column h-screen home">
+    <section class="toolbar">
+      <p class="text-2xl title md:text-3xl m-0 font-bold ">{{title}}</p>
+      <section class="flex align-items-center gap-2">
+        <span (click)="isDark = !isDark" class="font-bold text-blue-500 cursor-pointer text-xl">
+          <i class="bi" [className]="getIcon(true)"></i>
         </span>
-        <a class="font-bold text-blue-500 cursor-pointer text-2xl" href="https://www.asciitable.com/" target="_blank"
+        <a class="font-bold text-blue-500 cursor-pointer text-2xl" [href]="link_table" target="_blank"
           rel="noopener noreferrer">
           <i class="bi bi-link-45deg"></i>
         </a>
-        <span (click)="init = false; value = null" class="font-bold text-orange-500 cursor-pointer text-2xl">
-          <i class="bi bi-x-circle"></i>
+        <span (click)="openModal = true" class="font-bold text-blue-500 cursor-pointer text-xl">
+          <i class="bi bi-info-circle"></i>
         </span>
       </section>
-      <app-table [value]="value"></app-table>
     </section>
-    <section class="w-full">
-      <app-infos></app-infos>
+    <section class="h-full">
+      <section class="form-input">
+        <section class="input w-full md:w-6">
+          <input pTooltip="Marque o checkbox para utilizar ASCII Extends" class="txt" type="text"
+            [(ngModel)]="inputValue" placeholder="Insira os caracteres" tooltipPosition="left">
+          <p-checkbox pTooltip="Utilizar ASCII - Extends" [(ngModel)]="isAscExtends" [binary]="true"
+            inputId="binary"></p-checkbox>
+          <button (click)="initConverter()" class="btn-form">
+            <i class="bi" [className]="getIcon()"></i>
+          </button>
+        </section>
+      </section>
+      <section class="infos">
+        <p class="m-0 pt-1 font-bold text-sm md:hidden">Marque o checkbox para utilizar ASCII Extends</p>
+      </section>
+      <section *ngIf="init" class="result">
+        <section class="card w-full">
+          <p>{{invalidCharactersStack}}</p>
+        </section>
+      </section>
     </section>
   </section>
-  }
 </section>
-<p-dialog header="Informações" [(visible)]="visible" styleClass="w-10 md:w-6 md:h-auto">
-  <p-tabView>
-    <p-tabPanel header="Caracteres de controle">
-      <section class="w-full dial">
-        <p-scrollPanel [style]="{ width: '100%', height: '100%' }">
-          <ol>
-            @for (item of caracInfos; track $index) {
-            <li class="list-disc">
-              <span class="font-bold">{{item.nome}} - </span>
-              <span class="font-semibold">{{item.fullNome}} : </span>
-              <span class="text-secundary text-sm">{{item.descricao}}</span>
-            </li>
-            }
-          </ol>
-        </p-scrollPanel>
-      </section>
-    </p-tabPanel>
-    <p-tabPanel header="Outras infos">
-      <section class="w-full dial">
-        <p-scrollPanel [style]="{ width: '100%', height: '100%' }">
-          <ol>
-            @for (item of outrasInfos; track $index) {
-            <li class="list-disc">
-              <span class="font-bold">{{item.nome}} - </span>
-              <span class="text-secundary text-sm">{{item.descricao}}</span>
-            </li>
-            }
-          </ol>
-        </p-scrollPanel>
-      </section>
-    </p-tabPanel>
-  </p-tabView>
-</p-dialog>

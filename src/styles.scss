@@ -13,3 +13,28 @@ body {
 * {
   font-family: 'Noto Sans', sans-serif;
 }
+
+.p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
+  background: #F5F3FF;
+  color: #6D28D9
+}
+
+.gradient {
+  background-color: #8BC6EC;
+  background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+
+}
+
+.light {
+  --pastel1: #FEFCF3;
+  --pastel2: #F5EBE0;
+  --pastel3: #F0DBDB;
+  --pastel4: #DBA39A;
+}
+
+.dark {
+  --pastel1: #DDE6ED;
+  --pastel2: #9DB2BF;
+  --pastel3: #526D82;
+  --pastel4: #27374D;
+}
