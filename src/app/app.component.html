@@ -86,9 +86,10 @@
       @if (!skeleton['card']) {
       <section *ngIf="init && !refresh" class="result pt-1">
         <section class="card w-full">
-          <section *ngIf="invalidCharactersStack !== ''" class="">
+          <section *ngIf="invalidCharactersStack !== ''">
             <p class="invalidMsg">
               Os caracteres [<strong>{{invalidCharactersStack}}</strong>] não pertencem à tabela <strong>ASCII</strong>.
+              Por isso eles foram <strong>removidos</strong>!
             </p>
           </section>
           <section *ngIf="validCharacters !== ''" class="table">
