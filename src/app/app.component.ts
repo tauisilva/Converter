@@ -3,13 +3,10 @@ import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ChipModule } from 'primeng/chip';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { InputTextModule } from 'primeng/inputtext';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TabViewModule } from 'primeng/tabview';
@@ -22,17 +19,17 @@ import { TableComponent } from './table/table.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet, ChipModule, FormsModule,
-    InputTextModule, ButtonModule, TableComponent,
-    NgIf, NgFor, InfosComponent, ScrollPanelModule,
+  imports: [ // importação dos modulos
+    RouterOutlet, FormsModule,
+    TableComponent, NgIf, NgFor,
+    InfosComponent, ScrollPanelModule,
     DialogModule, TabViewModule, ToastModule, TooltipModule,
     InputSwitchModule, CheckboxModule, ConfirmPopupModule,
     SkeletonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None // quebra de encapsulamento dos modulos importados 
 })
 export class AppComponent implements OnInit {
 
@@ -72,17 +69,17 @@ export class AppComponent implements OnInit {
   //<-------------- Links -------------->
 
   ngOnInit() {
-    let time = 500;
+    let time = 500; // inicia com 500 milisegundos
     Object.keys(this.skeleton).forEach((key: string) => {
-      time += 300;
-      this.disableSkeleton(key, time);
+      time += 300; // Incrementa valor sobre time
+      this.disableSkeleton(key, time); // Desabilta cada key com seu nome/time
     });
-    this.history.push({ valor: 'test 🦄' });
+    this.addTest(); //Add itens mock
   }
 
-  disableSkeleton(key: string, time?: number) {
+  disableSkeleton(key: string, time?: number) { // Função para desabilitar o skeleton com base no valor/Key
     setTimeout(() => {
-      this.skeleton[key] = false;
+      this.skeleton[key] = false; 
     }, time ? time : 500);
   }
 
@@ -114,12 +111,12 @@ export class AppComponent implements OnInit {
 
   manegerHistory(value: any) {
     // Verificar se o valor já existe em history
-    const valueExists = this.history.some(item => item.valor === value);
+    const valueExists = this.history.some(item => item.valor === value); // verificar se valor ja não existe para evitar redundancia 
     if (!valueExists) {
       if (this.history?.length < 5) {
-        this.history.push({ valor: value });
+        this.history.push({ valor: value }); // adiciona valor no historico 
       } else {
-        this.removeItemHistory(0);
+        this.removeItemHistory(0); // remove o iten 0 mantendo sempre 5 items
         this.history.push({ valor: value });
       }
     }
@@ -130,7 +127,7 @@ export class AppComponent implements OnInit {
     // Verifica se o valor é uma string vazia
   }
 
-  reload() {
+  reload() { // controle da valor para atualizar o DOM
     this.verifyCaracteres(this.inputValue);
     this.refresh = true;
     this.init = false;
@@ -153,7 +150,7 @@ export class AppComponent implements OnInit {
   //<-------------- REGEX's -------------->
 
   //<-------------- Get's -------------->
-  getIcon(theme?: boolean) {
+  getIcon(theme?: boolean) { //Icones do sitema de acordo com cada situação
     if (theme) {
       return this.isDark ? 'bi-sun' : 'bi-moon-stars';
     } else {
@@ -163,12 +160,20 @@ export class AppComponent implements OnInit {
     }
   }
 
-  getTheme() {
+  getTheme() { // Controle de tema(dark default)
     return this.isDark ? 'dark' : 'light';
   }
 
-  removeItemHistory(index: number) {
+  removeItemHistory(index: number) { // remover item da lista pela ação do user de acordo com o index
     this.history.splice(index, 1);
+  }
+
+  // Função para limitar o número de caracteres
+  limitarCaracteres(valor: string): string {
+    if (valor && valor.length > 15) {
+      return valor.substring(0, 15) + '...';
+    }
+    return valor;
   }
 
   // Método para exibir uma mensagem na interface
@@ -179,5 +184,10 @@ export class AppComponent implements OnInit {
       summary: summ,
       detail: detail
     });
+  }
+
+  addTest() { // Adiccionar valores mock para testes
+    this.history.push({ valor: 'Test 🦄🐲🦉' });
+    this.history.push({ valor: 'Transborde, morada do caos! Recipiente insolente de loucura! Negue a vontade oculta, congele e oblitere! Perturbe o sono! A donzela de ferro rasteja! A boneca de lama desintegra! Se una! Se oponha! Preencha a terra e reconheça sua própria impotência!' });
   }
 }

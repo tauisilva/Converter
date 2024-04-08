@@ -52,8 +52,8 @@ export class TableComponent implements OnInit {
       if (!isNaN(charCode)) {
         // Verifica se o caractere já foi convertido
         if (!convertedSet.has(charCode)) {
-          const conversionResult = this.convertCharacter(charCode);
-          this.convertedCharacters.push(conversionResult);
+          const conversionResult = this.convertCharacter(charCode); // converter valor e armazena 
+          this.convertedCharacters.push(conversionResult); // adiciona na lista 
           convertedSet.add(charCode); // Adiciona o código do caractere ao conjunto
         }
       }

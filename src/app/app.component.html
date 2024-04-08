@@ -68,7 +68,7 @@
         @for (item of history; track $index) {
         <span class="item-history">
           <p (click)="inputValue = item?.valor; initConverter(true)" pTooltip="converter item" class="m-0">
-            {{item?.valor}} |
+            {{ limitarCaracteres(item?.valor) }} |
           </p>
           <i pTooltip="remover item" [autoHide]="false" (click)="removeItemHistory($index)" class="bi bi-x-circle"></i>
         </span>
@@ -95,6 +95,13 @@
           <section *ngIf="validCharacters !== ''" class="table">
             <app-table [value]="validCharacters"></app-table>
           </section>
+        </section>
+      </section>
+      <section *ngIf="!init && !refresh" class="flex flex-column align-items-center">
+        <p class="text-md text-center md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para
+          iniciar!</p>
+        <section class="w-full md:w-3">
+          <img class="w-auto h-full" src="assets/gif.svg">
         </section>
       </section>
       }@else {
