@@ -1,39 +1,41 @@
-@if (value.length > 0) {
-<p-table styleClass="p-datatable-striped p-datatable-gridlines" #dt1 [scrollable]="true" scrollHeight="60dvh"
-  [columns]="cols" [value]="convertedCharacters" [tableStyle]="{ 'min-width': '50rem' }">
-  <ng-template pTemplate="caption">
-    <div class="flex justify-content-end align-items-center">
-      <section class="flex gap-2">
-        <span class="p-input-icon-left w-10 md:w-auto">
-          <i class="bi bi-search"></i>
-          <input pInputText type="text" (input)="dt1?.filterGlobal($any($event.target).value, 'contains')"
-            placeholder="Search keyword" />
-        </span>
+<section class="table-infos">
+  @if (value.length > 0) {
+  <p-table styleClass="p-datatable-striped p-datatable-gridlines" #dt1 [scrollable]="true" scrollHeight="60dvh"
+    [columns]="cols" [value]="convertedCharacters" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-end align-items-center">
+        <section class="flex gap-2">
+          <span class="p-input-icon-left w-10 md:w-auto">
+            <i class="bi bi-search"></i>
+            <input pInputText type="text" (input)="dt1?.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Search keyword" />
+          </span>
+        </section>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th [pSortableColumn]="col.field" style="width:20%" *ngFor="let col of columns">
+          {{ col.header }}<p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{ rowData[col.field] }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  }@else {
+  <section class="w-full flex flex-column align-items-center justify-content-center h-auto">
+    <p class="font-semibold text-xl">Não temos nada para mostrar, talvez ocorreu um erro, sorry!</p>
+    <section class="w-full h-auto flex justify-content-center">
+      <section class="w-3 border-circle shadow-2 overflow-hidden surface-200">
+        <img class="w-full h-full" src="assets/pato.gif" alt="">
       </section>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="header" let-columns>
-    <tr>
-      <th [pSortableColumn]="col.field" style="width:20%" *ngFor="let col of columns">
-        {{ col.header }}<p-sortIcon [field]="col.field"></p-sortIcon>
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-rowData let-columns="columns">
-    <tr>
-      <td *ngFor="let col of columns">
-        {{ rowData[col.field] }}
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
-}@else {
-<section class="w-full flex flex-column align-items-center justify-content-center h-auto">
-  <p class="font-semibold text-xl">Não temos nada para mostrar, talvez ocorreu um erro, sorry!</p>
-  <section class="w-full h-auto flex justify-content-center">
-    <section class="w-3 border-circle shadow-2 overflow-hidden surface-200">
-      <img class="w-full h-full" src="assets/pato.gif" alt="">
     </section>
   </section>
+  }
 </section>
-}

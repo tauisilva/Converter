@@ -1,83 +1,146 @@
 <p-toast position="bottom-center" key="bc"></p-toast>
 <p-confirmPopup></p-confirmPopup>
-<section class="w-full justify-content-between flex flex-column gap-2 px-2 h-full text-color">
-  <section class="w-full h-full">
-    <section class="w-full py-2 flex flex justify-content-between capitalize">
-      <p class="text-2xl md:text-3xl m-0 font-bold ">{{title}}</p>
-      <section class="flex w-5 gap-2 justify-content-end">
-        <span (click)="visible = true" class="font-bold text-blue-500 cursor-pointer text-2xl">
-          <i class="bi bi-info-circle-fill"></i>
+<section [className]="getTheme()">
+  <section class="w-full flex flex-column h-screen home">
+    <section class="toolbar">
+      @if (!skeleton['title']) {
+      <p class="text-2xl title md:text-3xl m-0 font-bold ">{{title}}</p>
+      }@else{
+      <p-skeleton height="2rem" [styleClass]="'w-7rem md:w-15rem'"></p-skeleton>
+      }
+      @if (!skeleton['btns']) {
+      <section class="flex align-items-center gap-2">
+        <span (click)="isDark = !isDark" class="font-bold text-blue-500 cursor-pointer text-xl">
+          <i class="bi" [className]="getIcon(true)"></i>
         </span>
-        <a class="font-bold text-blue-500 cursor-pointer text-2xl" href="https://www.asciitable.com/" target="_blank"
+        <a class="font-bold text-blue-500 cursor-pointer text-2xl" [href]="link_table" target="_blank"
           rel="noopener noreferrer">
           <i class="bi bi-link-45deg"></i>
         </a>
-      </section>
-    </section>
-    <section class="w-full gap-2 flex flex-column align-items-center">
-      <section class="flex align-items-center justify-content-center w-full gap-2 font-bold">
-        <p>ASCII [0-127]</p>
-        <p-inputSwitch [(ngModel)]="isAscExtends"></p-inputSwitch>
-        <p>ASCII - Extends [128 - 255]</p>
-      </section>
-      <section class="form md:w-6 w-full">
-        <span class="p-float-label w-full">
-          <input class="w-full" pInputText id="txt" [(ngModel)]="value" (ngModelChange)="onInputChange($event)" />
-          <label for="txt">Insira os caracteres</label>
+        <a class="font-bold text-blue-500 cursor-pointer text-2xl" [href]="link_repository" target="_blank"
+          rel="noopener noreferrer">
+          <i class="bi bi-github"></i>
+        </a>
+        <span (click)="openModal = true" class="font-bold text-blue-500 cursor-pointer text-xl">
+          <i class="bi bi-info-circle"></i>
         </span>
-        <p-button *ngIf="value !== null && !init && !refresh" severity="success" [disabled]="value == null"
-          (onClick)="confirm($event)" icon="pi pi-check" size="small">
-          <span class="px-1 font-medium"><i class="bi bi-caret-right-fill"></i></span>
-        </p-button>
-        <p-button *ngIf="value !== null && init" [disabled]="value == null" (onClick)="confirm($event, true)"
-          severity="info" icon="pi pi-check" size="small">
-          <span class="px-1"><i class="bi bi-arrow-clockwise"></i></span>
-        </p-button>
       </section>
-      <section *ngIf="msg !== null" class="text-center border-red-500 border-1 border-round w-full">
-        <p class="px-2 font-medium">
-          Os caracteres [<strong>{{msg}}</strong>] não pertencem à tabela <strong>ASCII</strong>.
-        </p>
-      </section>
+      }@else {
+      <div class="flex align-items-end">
+        <p-skeleton shape="circle" size="2rem" styleClass="mr-1"></p-skeleton>
+        <p-skeleton shape="circle" size="2rem" styleClass="mr-1"></p-skeleton>
+        <p-skeleton shape="circle" size="2rem" styleClass="mr-1"></p-skeleton>
+      </div>
+      }
     </section>
-    <section *ngIf="!init && !refresh" class="w-full noInit flex flex-column align-items-center">
-      <p class="text-md md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para iniciar!</p>
-      <section class="flex gap-2">
-        <p-chip label="hex"></p-chip>
-        <p-chip label="binary"></p-chip>
-        <p-chip label="decimal"></p-chip>
-        <p-chip label="octal"></p-chip>
-        <p-chip label="html"></p-chip>
+    <section class="h-auto">
+      @if (!skeleton['input']) {
+      <section class="form-input">
+        <section class="input w-full md:w-6">
+          <input (ngModelChange)="onInputChange($event)" [autoHide]="false"
+            pTooltip="marque o checkbox para utilizar ASCII Extends" class="txt" type="text" [(ngModel)]="inputValue"
+            placeholder="Insira os caracteres" tooltipPosition="left">
+          <p-checkbox pTooltip="utilizar ASCII - Extends" [(ngModel)]="isAscExtends" [binary]="true"
+            inputId="binary"></p-checkbox>
+          <button [disabled]="inputValue === ''" (click)="initConverter(init)" class="btn-form">
+            <i class="bi" [className]="getIcon()"></i>
+          </button>
+        </section>
       </section>
-      <section class="w-full md:w-3">
-        <img class="w-auto h-full" src="assets/gif.svg">
+      }@else {
+      <section class="w-full skel-form">
+        <p-skeleton [styleClass]="'w-full'" height="2.3rem" borderRadius="1rem"></p-skeleton>
       </section>
-    </section>
-    <section class="w-full h-auto flex justify-content-center" *ngIf="refresh">
-      <section class="w-3">
-        <img class="w-full border-circle h-full" src="assets/bixinho.gif" alt="">
+      }
+      @if (!skeleton['infos']) {
+      <section class="infos">
+        <p class="m-0 pt-1 font-bold text-sm md:hidden">Marque o checkbox para utilizar ASCII Extends</p>
       </section>
+      }@else {
+      <section class="pt-1 md:hidden">
+        <section class="px-5">
+          <p-skeleton [styleClass]="'w-full'" height="1rem" borderRadius=".5rem"></p-skeleton>
+        </section>
+      </section>
+      }
+      @if(!skeleton['history']){
+      <section *ngIf="history && history.length > 0" class="history">
+        @for (item of history; track $index) {
+        <span class="item-history">
+          <p (click)="inputValue = item?.valor; initConverter(true)" pTooltip="converter item" class="m-0">
+            {{ limitarCaracteres(item?.valor) }} |
+          </p>
+          <i pTooltip="remover item" [autoHide]="false" (click)="removeItemHistory($index)" class="bi bi-x-circle"></i>
+        </span>
+        }
+      </section>
+      }@else {
+      <section class="history">
+        <div class="flex gap-2">
+          <ng-container *ngFor="let item of [1,2,3,4,5]; let i = index">
+            <p-skeleton [styleClass]="'w-3rem h-2rem md:w-10rem'" borderRadius="1rem"></p-skeleton>
+          </ng-container>
+        </div>
+      </section>
+      }
+      @if (!skeleton['card']) {
+      <section *ngIf="init && !refresh" class="result pt-1">
+        <section class="card w-full">
+          <section *ngIf="invalidCharactersStack !== ''">
+            <p class="invalidMsg">
+              Os caracteres [<strong>{{invalidCharactersStack}}</strong>] não pertencem à tabela <strong>ASCII</strong>.
+              Por isso eles foram <strong>removidos</strong>!
+            </p>
+          </section>
+          @if(validCharacters !== ''){
+          <section class="table">
+            <app-table [value]="validCharacters"></app-table>
+          </section>
+          }@else {
+          <section class="flex justify-content-center align-items-center">
+          </section>
+          <section class="flex flex-column align-items-center">
+            <p class="text-md text-center md:text-3xl font-bold">Nenhum caractere válido existente na tabela ASCII |
+              ASCII - Extends!</p>
+            <section class="w-6 md:w-3">
+              <img class="w-full h-full border-circle" src="assets/bixinho.gif">
+            </section>
+          </section>
+          }
+        </section>
+      </section>
+      <section *ngIf="!init && !refresh" class="flex flex-column align-items-center">
+        <p class="text-md text-center md:text-3xl font-bold">Bem-vindo! Informe os caracteres no campo acima para
+          iniciar!</p>
+        <section class="w-full md:w-3">
+          <img class="w-auto h-full" src="assets/gif.svg">
+        </section>
+      </section>
+      }@else {
+      <section class="skel-card">
+        <p-skeleton width="100%" height="100%" borderRadius=".875rem"></p-skeleton>
+      </section>
+      }
     </section>
   </section>
-  @if (init && !refresh) {
-  <section class="w-full h-full">
-    <section class="flex gap-2 justify-content-end">
-      <!-- <span (click)="visible = true" class="font-bold text-blue-500 cursor-pointer text-2xl">
-        <i class="bi bi-info-circle-fill"></i>
-      </span>
-      <a class="font-bold text-blue-500 cursor-pointer text-2xl" href="https://www.asciitable.com/" target="_blank"
-        rel="noopener noreferrer">
-        <i class="bi bi-link-45deg"></i>
-      </a> -->
-      <span (click)="init = false; value = null" class="font-bold text-orange-500 cursor-pointer text-2xl">
-        <i class="bi bi-x-circle"></i>
-      </span>
-    </section>
-    <app-table [value]="validCharacters"></app-table>
-  </section>
-  }
 </section>
-<p-dialog [resizable]="true" [maximizable]="true" [modal]="true" header="Informações" [(visible)]="visible"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<p-dialog [resizable]="true" [maximizable]="true" [modal]="true" header="Informações" [(visible)]="openModal"
   styleClass="w-11 md:w-6 md:h-auto">
   <p-tabView>
     <p-tabPanel header="Tabela AscII">
@@ -116,3 +179,4 @@
     </p-tabPanel>
   </p-tabView>
 </p-dialog>
+<!-- Modal -->
