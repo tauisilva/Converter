@@ -38,7 +38,6 @@ export class AppComponent implements OnInit {
   private confirmationService = inject(ConfirmationService);
 
   //<-------------- Variveis -------------->
-
   title = 'Converter | ASCII'; // Título da página
   isDark: boolean = true; // Controle do tema
   openModal: boolean = false; // Controle do modal com informações 
@@ -60,7 +59,6 @@ export class AppComponent implements OnInit {
   history: any[] = []; // Armazena os 5 ultimos valores
   caracInfos = caracteresDeControle; // Informações sobre caracteres de controle
   outrasInfos = informacoes; // Outras informações
-
   //<-------------- Variveis -------------->
 
   //<-------------- Links -------------->
@@ -79,7 +77,7 @@ export class AppComponent implements OnInit {
 
   disableSkeleton(key: string, time?: number) { // Função para desabilitar o skeleton com base no valor/Key
     setTimeout(() => {
-      this.skeleton[key] = false; 
+      this.skeleton[key] = false;
     }, time ? time : 500);
   }
 
