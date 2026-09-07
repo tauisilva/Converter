@@ -1,5 +1,5 @@
 <section class="table-infos">
-  @if (value.length > 0) {
+  @if (value && value.length > 0) {
   <p-table styleClass="p-datatable-striped p-datatable-gridlines" #dt1 [scrollable]="true" scrollHeight="60dvh"
     [columns]="cols" [value]="convertedCharacters" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="caption">

@@ -21,7 +21,7 @@ import { controlChar } from '../infos/caracteres';
 })
 export class TableComponent implements OnInit {
   // Propriedades do componente
-  @Input() value: any; // Valor de entrada do usuário
+  @Input() value: any = ''; // Valor de entrada do usuário
   convertedCharacters: any[] = []; // Array para armazenar caracteres convertidos
   cols: any[] = []; // Colunas da tabela
 
@@ -45,6 +45,9 @@ export class TableComponent implements OnInit {
 
   // Método para converter o valor de entrada em caracteres ASCII
   convertValue(value: string): void {
+    if (!value) {
+      return;
+    }
     const convertedSet = new Set(); // Conjunto para armazenar caracteres já convertidos
 
     for (let i = 0; i < value.length; i++) {
