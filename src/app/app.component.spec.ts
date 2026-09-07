@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [MessageService, ConfirmationService]
     }).compileComponents();
   });
 
@@ -14,16 +16,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'converter' title`, () => {
+  it(`should have the 'Converter | ASCII' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('converter');
+    expect(app.title).toEqual('Converter | ASCII');
   });
 
-  it('should render title', () => {
+  it('should correctly identify ASCII characters', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, converter');
+    const app = fixture.componentInstance;
+    expect(app.isAscii('A')).toBeTrue();
+    expect(app.isAscii('1')).toBeTrue();
   });
 });

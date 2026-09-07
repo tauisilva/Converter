@@ -19,20 +19,29 @@ import { TableComponent } from './table/table.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ // importação dos modulos
-    RouterOutlet, FormsModule,
-    TableComponent, NgIf, NgFor,
-    InfosComponent, ScrollPanelModule,
-    DialogModule, TabViewModule, ToastModule, TooltipModule,
-    InputSwitchModule, CheckboxModule, ConfirmPopupModule,
-    SkeletonModule
+  imports: [
+    // importação dos modulos
+    RouterOutlet,
+    FormsModule,
+    TableComponent,
+    NgIf,
+    NgFor,
+    InfosComponent,
+    ScrollPanelModule,
+    DialogModule,
+    TabViewModule,
+    ToastModule,
+    TooltipModule,
+    InputSwitchModule,
+    CheckboxModule,
+    ConfirmPopupModule,
+    SkeletonModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  encapsulation: ViewEncapsulation.None // quebra de encapsulamento dos modulos importados 
+  encapsulation: ViewEncapsulation.None, // quebra de encapsulamento dos modulos importados
 })
 export class AppComponent implements OnInit {
-
   // Injetando os serviços necessários
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
@@ -40,17 +49,18 @@ export class AppComponent implements OnInit {
   //<-------------- Variveis -------------->
   title = 'Converter | ASCII'; // Título da página
   isDark: boolean = true; // Controle do tema
-  openModal: boolean = false; // Controle do modal com informações 
+  openModal: boolean = false; // Controle do modal com informações
   isAscExtends: boolean = false; // Modifica entre AscII(entre 0 e 127) e AscII Extends(128-255)
   init: boolean = false; // Indica se o componente foi inicializado
   refresh: boolean = false; // Atualização dos valores
-  skeleton: { [key: string]: boolean } = { // Controle de skeleton 
+  skeleton: { [key: string]: boolean } = {
+    // Controle de skeleton
     title: true,
     btns: true,
     input: true,
     infos: true,
     history: true,
-    card: true
+    card: true,
   };
 
   inputValue: any = null; // Valor de entrada do usuário
@@ -62,8 +72,8 @@ export class AppComponent implements OnInit {
   //<-------------- Variveis -------------->
 
   //<-------------- Links -------------->
-  link_table = 'https://www.asciitable.com/'
-  link_repository = 'https://github.com/tauisilva/Converter'
+  link_table = 'https://www.asciitable.com/';
+  link_repository = 'https://github.com/tauisilva/Converter';
   //<-------------- Links -------------->
 
   ngOnInit() {
@@ -75,10 +85,14 @@ export class AppComponent implements OnInit {
     this.addTest(); //Add itens mock
   }
 
-  disableSkeleton(key: string, time?: number) { // Função para desabilitar o skeleton com base no valor/Key
-    setTimeout(() => {
-      this.skeleton[key] = false;
-    }, time ? time : 500);
+  disableSkeleton(key: string, time?: number) {
+    // Função para desabilitar o skeleton com base no valor/Key
+    setTimeout(
+      () => {
+        this.skeleton[key] = false;
+      },
+      time ? time : 500,
+    );
   }
 
   async initConverter(isReload?: boolean) {
@@ -102,17 +116,17 @@ export class AppComponent implements OnInit {
       if (this.isAscii(char)) {
         this.validCharacters += char; // Concatenando caracteres válidos
       } else {
-        this.invalidCharactersStack += char // Concatenando caracteres inválidos
+        this.invalidCharactersStack += char; // Concatenando caracteres inválidos
       }
     }
   }
 
   manegerHistory(value: any) {
     // Verificar se o valor já existe em history
-    const valueExists = this.history.some(item => item.valor === value); // verificar se valor ja não existe para evitar redundancia 
+    const valueExists = this.history.some((item) => item.valor === value); // verificar se valor ja não existe para evitar redundancia
     if (!valueExists) {
       if (this.history?.length < 5) {
-        this.history.push({ valor: value }); // adiciona valor no historico 
+        this.history.push({ valor: value }); // adiciona valor no historico
       } else {
         this.removeItemHistory(0); // remove o iten 0 mantendo sempre 5 items
         this.history.push({ valor: value });
@@ -125,7 +139,8 @@ export class AppComponent implements OnInit {
     // Verifica se o valor é uma string vazia
   }
 
-  reload() { // controle da valor para atualizar o DOM
+  reload() {
+    // controle da valor para atualizar o DOM
     this.verifyCaracteres(this.inputValue);
     this.refresh = true;
     this.init = false;
@@ -140,29 +155,32 @@ export class AppComponent implements OnInit {
   isAscii(char: string): boolean {
     const regexASCII = /^[\x00-\x7F]*$/;
     const regexASCIIExtended = /^[\x00-\xFF]*$/;
-    return this.isAscExtends ?
-      regexASCIIExtended.test(char) :
-      regexASCII.test(char);
+    return this.isAscExtends
+      ? regexASCIIExtended.test(char)
+      : regexASCII.test(char);
   }
 
   //<-------------- REGEX's -------------->
 
   //<-------------- Get's -------------->
-  getIcon(theme?: boolean) { //Icones do sitema de acordo com cada situação
+  getIcon(theme?: boolean) {
+    //Icones do sitema de acordo com cada situação
     if (theme) {
       return this.isDark ? 'bi-sun' : 'bi-moon-stars';
     } else {
-      return this.inputValue !== null && this.init ?
-        'bi-arrow-clockwise text-xl' :
-        'bi-play text-3xl';
+      return this.inputValue !== null && this.init
+        ? 'bi-arrow-clockwise text-xl'
+        : 'bi-play text-3xl';
     }
   }
 
-  getTheme() { // Controle de tema(dark default)
+  getTheme() {
+    // Controle de tema(dark default)
     return this.isDark ? 'dark' : 'light';
   }
 
-  removeItemHistory(index: number) { // remover item da lista pela ação do user de acordo com o index
+  removeItemHistory(index: number) {
+    // remover item da lista pela ação do user de acordo com o index
     this.history.splice(index, 1);
   }
 
@@ -180,12 +198,12 @@ export class AppComponent implements OnInit {
       key: 'bc',
       severity: sev,
       summary: summ,
-      detail: detail
+      detail: detail,
     });
   }
 
-  addTest() { // Adiccionar valores mock para testes
+  addTest() {
+    // Adiccionar valores mock para testes
     this.history.push({ valor: 'Test 🦄🐲🦉' });
-    this.history.push({ valor: 'Transborde, morada do caos! Recipiente insolente de loucura! Negue a vontade oculta, congele e oblitere! Perturbe o sono! A donzela de ferro rasteja! A boneca de lama desintegra! Se una! Se oponha! Preencha a terra e reconheça sua própria impotência!' });
   }
 }
